@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
-use App\promocion;
+use App\Model\NotasCds\Promocion;
+use App\Http\controllers\controller;
+use DB;
 
 class promocionController extends Controller
 {
@@ -14,12 +16,14 @@ class promocionController extends Controller
      */
     public function index()
     {
-        $pr = promocion::find(1)->;
-        return $pr->curso->nombre;
-
+        // $r= Promocion::select('promociones.id', 'niveles.nombre_nivel as nivel', 'cohortes.nombre_cohorte as cohorte')
+        // ->join('niveles','niveles.id','=' ,'promociones.id_nivel')
+        // ->join('cohortes','cohortes.id','=' ,'promociones.id_cohorte')->get();
         // foreach ($pr as $p){
         //     echo $p .'<br>';
         // }
+            return Promocion::all();
+
         //consultas relacionales en la base de datos mysql
         // $promociones = DB::table('promociones')
         // ->join('niveles','niveles.id', '=' , 'promociones.id_nivel')
@@ -27,7 +31,7 @@ class promocionController extends Controller
         // ->join('cohortes','cohortes.id','=','promociones.id_cohorte')
         // ->select('promociones.id','niveles.nombre_nivel as nivel', 'cursos.nombre as curso','cohortes.nombre_cohorte as cohorte')->get();
         // foreach ($promociones as $n){
-        //     echo  "$n->id $n->nivel $n->curso $n->cohorte<br>";
+        //     echo  "$n->id $n->cohorte $n->nivel $n->curso<br>";
         // }
         // foreach($promociones as $promocion){
         //     echo $promocion->id_nivel."<br>";

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cohorte;

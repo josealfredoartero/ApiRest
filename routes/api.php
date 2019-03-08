@@ -24,5 +24,5 @@ Route::group([
     Route::get('productos','ProductoController@all');
     Route::resource('roles', 'RolController');
     Route::resource('user', 'UserController');
-    Route::resource('promociones','promocionController');
+    Route::resource('promocion','NotasCds\promocionController');
 });
