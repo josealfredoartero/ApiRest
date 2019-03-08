@@ -1,0 +1,24 @@
+--------+-----------+----------------------------+---------------+---------------------------------------------+--------------------------+
+| Domain | Method    | URI                        | Name          | Action                                      | Middleware               |
++--------+-----------+----------------------------+---------------+---------------------------------------------+--------------------------+
+|        | GET|HEAD  | /                          |               | Closure                                     | web                      |
+|        | POST      | api/auth/login             |               | App\Http\Controllers\AuthController@login   | api                      |
+|        | POST      | api/auth/logout            |               | App\Http\Controllers\AuthController@logout  | api,jwt                  |
+|        | POST      | api/auth/me                |               | App\Http\Controllers\AuthController@me      | api,jwt                  |
+|        | POST      | api/auth/productos         |               | App\Http\Controllers\ProductoController@all | api,jwt                      |
+|        | POST      | api/auth/refresh           |               | App\Http\Controllers\AuthController@refresh | api,jwt                  |
+|        | GET|HEAD  | api/auth/roles             | roles.index   | App\Http\Controllers\RolController@index    | api,jwt,permisoRol:admin |
+|        | POST      | api/auth/roles             | roles.store   | App\Http\Controllers\RolController@store    | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/roles/create      | roles.create  | App\Http\Controllers\RolController@create   | api,jwt,permisoRol:admin |
+|        | DELETE    | api/auth/roles/{role}      | roles.destroy | App\Http\Controllers\RolController@destroy  | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/roles/{role}      | roles.show    | App\Http\Controllers\RolController@show     | api,jwt,permisoRol:admin |
+|        | PUT|PATCH | api/auth/roles/{role}      | roles.update  | App\Http\Controllers\RolController@update   | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/roles/{role}/edit | roles.edit    | App\Http\Controllers\RolController@edit     | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/user              | user.index    | App\Http\Controllers\UserController@index   | api,jwt,permisoRol:admin |
+|        | POST      | api/auth/user              | user.store    | App\Http\Controllers\UserController@store   | api                      |
+|        | GET|HEAD  | api/auth/user/create       | user.create   | App\Http\Controllers\UserController@create  | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/user/{user}       | user.show     | App\Http\Controllers\UserController@show    | api,jwt,permisoRol:admin |
+|        | PUT|PATCH | api/auth/user/{user}       | user.update   | App\Http\Controllers\UserController@update  | api,jwt,permisoRol:admin |
+|        | DELETE    | api/auth/user/{user}       | user.destroy  | App\Http\Controllers\UserController@destroy | api,jwt,permisoRol:admin |
+|        | GET|HEAD  | api/auth/user/{user}/edit  | user.edit     | App\Http\Controllers\UserController@edit    | api,jwt,permisoRol:admin |
++--------+-----------+----------------------------+---------------+---------------------------------------------+--------------------------+

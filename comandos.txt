@@ -1,0 +1,13 @@
+//configurar archivo .env
+//con las credenciales de la base de datos
+
+//Creacion de tablas con migraciones
+
+php artisan migrate
+
+
+//migracion de datos a las tablas
+
+php artisan db:seed --class=RolesTableSeeder
+
+php artisan db:seed --class=UsersTableSeeder
