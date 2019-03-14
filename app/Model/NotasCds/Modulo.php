@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,12 +8,12 @@ class Modulo extends Model
 {
     //
     public function docente(){
-        return $this->belongsTo('App\Docente', 'id');
+        return $this->belongsTo(docente::class, 'id');
     }
     public function actividad(){
-        return $this->hasMany('App\Actividad', 'id');
+        return $this->hasMany(actividad::class, 'id');
     }
     public function nivel(){
-        return $this->belongsTo('App\Nivel', 'id');
+        return $this->belongsTo(Nivel::class, 'id');
     }
 }

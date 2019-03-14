@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Promocion;
-use App\Modelo;
+use App\Model\NotasCds\Promocion;
+use App\Model\NotasCds\Modelo;
 
 class Nivel extends Model
 {

@@ -56,8 +56,7 @@ class RolController extends Controller
   } catch (\Throwable $th) {
     return response()->json(['error'=>'Registro  no guardado']);
   }
-        
-      
+          
     }
 
     /**

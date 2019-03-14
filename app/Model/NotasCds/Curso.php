@@ -1,9 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Curso;
+use App\Model\NotasCds\Curso;
+use App\Model\NotasCds\promocion;
 
 class Curso extends Model
 {

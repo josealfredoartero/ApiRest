@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Estudiante;
+use App\Model\NotasCds\Estudiante;
 
 class Estado extends Model
 {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
-use App\curso;
+use App\Http\Controllers\Controller;
+use App\Model\NotasCds\Curso;
 
 class cursosController extends Controller{
     /**
@@ -12,17 +13,11 @@ class cursosController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        //llamar todos los datos de la base de datos
-        $cursos=curso::all();
-        // if (isset($mensaje)){
-        //     return view('cursos.listar',compact('cursos','mensaje'));
-            
-        // }else{
-        //     return view('cursos.listar',compact('cursos'));
-        // }
-        //retornamos el dato que se encuentra en el nombre
-        return view('cursos.listar',compact('cursos'));
+        
+        $cursos=Curso::all();
+        return response()->json(['cursos'=>$cursos]);
     }
+    
     public function create(){
         return view('cursos.insert');
     }

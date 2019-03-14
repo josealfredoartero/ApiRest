@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Actividad;
+use App\Model\NotasCds\Actividad;
 
 class Nota extends Model
 {

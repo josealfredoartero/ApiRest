@@ -18,11 +18,19 @@ Route::group([
     'prefix' => 'auth',
 ], function () {
     Route::get('login', 'AuthController@login');
-    Route::get('logout', 'AuthController@logout');
-    Route::get('refresh', 'AuthController@refresh');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
-    Route::get('productos','ProductoController@all');
+    Route::post('productos','ProductoController@all');
     Route::resource('roles', 'RolController');
     Route::resource('user', 'UserController');
-    Route::resource('promocion','NotasCds\promocionController');
 });
+
+route::group([
+    'prefix' => 'notas',
+],
+ function(){
+    Route::resource('cursos','NotasCds\cursosController');
+    Route::resource('promocion','NotasCds\promocionController');
+    Route::resource('estudiante','NotasCds\EstudianteController');
+ });

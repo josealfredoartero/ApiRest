@@ -17,4 +17,8 @@ class ProductoController extends Controller
     {
         return response()->json(['productos'=>Producto::all()]);
     }
+    public function agregar(Type $var = null)
+    {
+        # code...
+    }
 }
