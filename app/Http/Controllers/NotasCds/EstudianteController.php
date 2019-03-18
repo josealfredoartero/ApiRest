@@ -16,7 +16,13 @@ class EstudianteController extends Controller
     public function index()
     {
         //
-        return Estudiante::all();
+    // return estudiante::all();
+        $estudiantes =estudiante::select('estudiantes.id','estudiantes.nombres','estudiantes.apellidos','estudiantes.DUI','estudiantes.fecha_nacimiento','estudiantes.genero','estudiantes.direccion','estudiantes.telefono','estudiantes.email','estados.nombre_estado as estado')
+        ->join('estados','estados.id','=','estudiantes.id_estado')
+        // ->join('promociones','promociones.id','=','estudiantes.id')
+        // ->join('niveles','niveles.id','=','promociones.id_nivel')
+        ->get();
+        return response()->json(['estudiantes'=>$estudiantes]);
     }
 
     /**
@@ -35,9 +41,16 @@ class EstudianteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(request $request)
     {
-        //
+        $estudiante = new Estudiante;
+        $datos = ["nombres"=>$request->nombres,"apellidos"=>$request->apellidos,"DUI"=>$request->dui,"fecha_nacimiento"=>$request->fechaNac,"genero"=>$request->genero,"direccion"=>$request->direccion,"telefono"=>$request->telefono,"email"=>$request->email,"id_promocion"=>1,"id_estado"=>1];
+        $estudiante = $datos;
+        if($estudiante->save()){
+            return response()->json(['mensaje'=>"dato agregado"]);            
+        }else{
+            return response()->json(['mensaje'=>"dato no agregado"]);
+        }
     }
 
     /**
@@ -71,7 +84,14 @@ class EstudianteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $estudiante=estudiante::findorfail($id);
+        $estudiante= $request;
+        if($estudiante->update()){
+            return response()->json(["mensaje"=>"dato modifiicado"]);
+        }else{
+            return response()->json(["mensaje"=>"dato no modifiicado"]);            
+        }
+        
     }
 
     /**
@@ -82,6 +102,16 @@ class EstudianteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $estudiante=estudiante::findorfail($id);
+        $estudiante->id_estado=1;
+        if($estudiante->delete()){
+            return response()->json(["mensaje"=>"dato modifiicado"]);            
+        }else{
+            return response()->json(["mensaje"=>"dato no modifiicado"]);            
+        }
+    }
+    public function modulos()
+    {
+        return response()->json(["modulos"=>promocion::all()]);
     }
 }

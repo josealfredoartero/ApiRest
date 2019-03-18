@@ -15,11 +15,11 @@ class cursosController extends Controller{
     public function index(){
         
         $cursos=Curso::all();
-        return response()->json(['cursos'=>$cursos]);
+    //     
     }
     
     public function create(){
-        return view('cursos.insert');
+        // return view('cursos.insert');
     }
 
     /**
@@ -38,21 +38,7 @@ class cursosController extends Controller{
 
         // mandar los cambios a la base de datos
         $cursos->save();
-        if($cursos->save() == true){
-            return "<script>
-            window.alert('DATO AGREGADO');
-            window.location.href='/inicio';
-            </script>";
-            // return redirect("/inicio/{'mensaje'=>$mensaje}");
-            // return view('cursos.listar',compact('cursos','mensaje'));
-            // return Redirect::to('/inicio');
-            // route::('id','cursosController@index');
-        }else{
-            return "<script>
-            window.alert('DATO NO AGREGADO');
-            window.location.href='/inicio';
-            </script>";
-        }
+        return response()->json(['mensaje'=>"Dato agregado"]);
     }
     /**
      * Display the specified resource.

@@ -33,4 +33,5 @@ route::group([
     Route::resource('cursos','NotasCds\cursosController');
     Route::resource('promocion','NotasCds\promocionController');
     Route::resource('estudiante','NotasCds\EstudianteController');
+    Route::post('estudiante/modulos','NotasCds\EstudianteController@modulos');
  });

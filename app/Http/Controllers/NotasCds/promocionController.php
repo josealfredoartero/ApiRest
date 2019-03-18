@@ -4,7 +4,7 @@ namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
 use App\Http\controllers\Controller;
-use App\Model\NotasCds\Promocion;
+use App\Model\NotasCds\estudiante;
 
 
 class promocionController extends Controller
@@ -21,6 +21,13 @@ class promocionController extends Controller
         ->join('cohortes','cohortes.id','=' ,'promociones.id_cohorte')
         ->join('cursos','cursos.id','=','promociones.id_curso')->get();
         return  response()->json(['promocion'=>$promocion]);
+
+        
+
+        //  $estudiantes = estudiante::select('estudiantes.id','estudiantes.nombre','estudiantes.DUI','estudiantes.fecha_nacimiento','estudiantes.genero','estudiantes.direccion','estudiantes.telefono','estudiantes.email','estados.nombre_estado')
+        // //  ->join('promociones','promociones.id','=','estudiante.id_promocion')
+        //  ->join('estados','estados.id','=','estudiantes.id_estado')->get();
+        // return response()->json(['estidiantes'=>$estudiantes]);
 
         //consultas relacionales en la base de datos mysql
         // $promociones = DB::table('promociones')

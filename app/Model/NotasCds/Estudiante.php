@@ -4,6 +4,8 @@ namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Model\NotasCds\Nota;
+use App\Model\NotasCds\promocion;
+use App\Model\NotasCds\estado;
 
 class Estudiante extends Model
 {
