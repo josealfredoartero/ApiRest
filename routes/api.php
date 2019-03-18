@@ -34,4 +34,6 @@ route::group([
     Route::resource('promocion','NotasCds\promocionController');
     Route::resource('estudiante','NotasCds\EstudianteController');
     Route::post('estudiante/modulos','NotasCds\EstudianteController@modulos');
+    route::put("estudiante/update","NotasCds\EstudianteController@update");
+    route::delete("estudiante/delete","NotasCds\EstudianteController@destroy");
  });

@@ -56,6 +56,11 @@ class EstudianteController extends Controller
         $estudiante->email=$request->email;
         $estudiante->id_promocion=1;
         $estudiante->id_estado=1;
+        // if($estudiante->save()){
+        //     return response()->json(['mensaje'=>"dato agregado"]);
+        // }else{
+        //     return response()->json(['mensaje'=>"dato no agregado"+$th]);
+        // }
         try{
                 $estudiante->save();
                 return response()->json(['mensaje'=>"dato agregado"]);    
@@ -94,15 +99,25 @@ class EstudianteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $estudiante=estudiante::findorfail($id);
-        $estudiante= $request;
-        if($estudiante->update()){
-            return response()->json(["mensaje"=>"dato modifiicado"]);
-        }else{
-            return response()->json(["mensaje"=>"dato no modifiicado"]);            
-        }
+        $estudiante=estudiante::findorfail($request->id);
+        $estudiante->nombres = $request->nombres;
+        $estudiante->apellidos = $request->apellidos;
+        $estudiante->DUI = $request->dui;
+        $estudiante->fecha_nacimiento = $request->fechaNac;
+        $estudiante->genero = $request->genero;
+        $estudiante->direccion = $request->direccion;
+        $estudiante->telefono = $request->telefono;
+        $estudiante->email = $request->email;
+        // $estudiante-> = $request->nombres;
+        // $estudiante-> = $request->nombres;
+        try{
+            $estudiante->update();
+            return response()->json(['mensaje'=>"dato Modificado"]);    
+    }catch(\Throwable $th){
+        return response()->json(['mensaje'=>"dato no Modificado"+$th]);
+    }
         
     }
 
@@ -112,18 +127,15 @@ class EstudianteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(request $request)
     {
-        $estudiante=estudiante::findorfail($id);
-        $estudiante->id_estado=1;
-        if($estudiante->delete()){
-            return response()->json(["mensaje"=>"dato modifiicado"]);            
-        }else{
-            return response()->json(["mensaje"=>"dato no modifiicado"]);            
+        $estudiante=estudiante::findorfail($request->id);
+        try{
+            $estudiante->delete();
+            return response()->json(['mensaje'=>"dato eliminado"]);    
+        }catch(\Throwable $th){
+        return response()->json(['mensaje'=>"dato no eliminado"+$th]);
         }
     }
-    public function modulos()
-    {
-        return response()->json(["modulos"=>promocion::all()]);
-    }
+   
 }
