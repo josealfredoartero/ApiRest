@@ -44,13 +44,25 @@ class EstudianteController extends Controller
     public function store(request $request)
     {
         $estudiante = new Estudiante;
-        $datos = ["nombres"=>$request->nombres,"apellidos"=>$request->apellidos,"DUI"=>$request->dui,"fecha_nacimiento"=>$request->fechaNac,"genero"=>$request->genero,"direccion"=>$request->direccion,"telefono"=>$request->telefono,"email"=>$request->email,"id_promocion"=>1,"id_estado"=>1];
-        $estudiante = $datos;
-        if($estudiante->save()){
-            return response()->json(['mensaje'=>"dato agregado"]);            
-        }else{
-            return response()->json(['mensaje'=>"dato no agregado"]);
+        // $datos = ["nombres"=>$request->nombres,"apellidos"=>$request->apellidos,"DUI"=>$request->dui,"fecha_nacimiento"=>$request->fechaNac,"genero"=>$request->genero,"direccion"=>$request->direccion,"telefono"=>$request->telefono,"email"=>$request->email,"id_promocion"=>1,"id_estado"=>1];
+        // $estudiante = $datos;
+        $estudiante->nombres=$request->nombres;
+        $estudiante->apellidos=$request->apellidos;
+        $estudiante->DUI=$request->dui;
+        $estudiante->fecha_nacimiento=$request->fechaNac;
+        $estudiante->genero=$request->genero;
+        $estudiante->direccion=$request->direccion;
+        $estudiante->telefono=$request->telefono;
+        $estudiante->email=$request->email;
+        $estudiante->id_promocion=1;
+        $estudiante->id_estado=1;
+        try{
+                $estudiante->save();
+                return response()->json(['mensaje'=>"dato agregado"]);    
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"dato no agregado"+$th]);
         }
+        // return response()->json(["datos"=>$datos]);
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Model\NotasCds\estado;
 class Estudiante extends Model
 {
     //
+    protected $fillable = ['nombres',"apellidos","DUI","fecha_nacimiento","genero","direccion","telefono","email","id_promocion","id_estado"];
     public function promocion(){
         return $this->belongsTo(promocion::class, 'id');
     }
