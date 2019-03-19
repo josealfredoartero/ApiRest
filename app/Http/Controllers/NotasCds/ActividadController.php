@@ -1,15 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\NotasCds;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\controllers\Controller;
-use App\Model\NotasCds\curso;
-use App\Model\NotasCds\Curso_nivels;
 
-
-
-class Curso_nivelsController extends Controller
+class ActividadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +13,7 @@ class Curso_nivelsController extends Controller
      */
     public function index()
     {
-        $CursoNivels= Curso_nivels::select('curso_nivels.id', 'niveles.nombre_nivel as nivel', 'cohortes.nombre_cohorte as cohorte','cursos.nombre as curso')
-        ->join('niveles','niveles.id','=' ,'curso_nivels.id_nivel')
-        ->join('cohortes','cohortes.id','=' ,'curso_nivels.id_cohorte')
-        ->join('cursos','cursos.id','=','curso_nivels.id_curso')->get();
-        return  response()->json(['CursoNivels'=>$CursoNivels]);
+        //
     }
 
     /**

@@ -17,7 +17,9 @@ class CreateNotasTable extends Migration
             $table->increments('id');
             $table->integer('id_estudiante')->unsigned()->nullable();
             $table->foreign('id_estudiante')->references('id')->on('estudiantes');
-            $table->double('nota');
+            $table->integer('id_actividad')->unsigned()->nullable();
+            $table->foreign('id_actividad')->references('id')->on('actividads');
+            $table->double('nota'); 
             $table->timestamps();
         });
     }

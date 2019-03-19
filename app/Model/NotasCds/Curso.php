@@ -9,7 +9,7 @@ class Curso extends Model
 {
     //permitir que modifique los campos en la tabla
     protected $fillable = ['nombre'];
-    public function CursoNivels(){
+    public function Curso_nivels(){
         return $this->hasMany(Curso_nivels::class, 'id');
     }
 }

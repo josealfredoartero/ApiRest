@@ -14,6 +14,6 @@ class Actividad extends Model
         return $this->belongsTo(Modulo::class, 'id');
     }
     public function nota(){
-        return $this->belongsTo(Nota::class, 'id');
+        return $this->hasMany(Nota::class, 'id');
     }
 }

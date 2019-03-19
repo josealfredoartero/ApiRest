@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\NotasCds;
+namespace App\Http\Controllers;
 
+use App\Nota;
 use Illuminate\Http\Request;
-use App\Http\controllers\Controller;
-use App\Model\NotasCds\curso;
-use App\Model\NotasCds\Curso_nivels;
 
-
-
-class Curso_nivelsController extends Controller
+class NotaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +14,7 @@ class Curso_nivelsController extends Controller
      */
     public function index()
     {
-        $CursoNivels= Curso_nivels::select('curso_nivels.id', 'niveles.nombre_nivel as nivel', 'cohortes.nombre_cohorte as cohorte','cursos.nombre as curso')
-        ->join('niveles','niveles.id','=' ,'curso_nivels.id_nivel')
-        ->join('cohortes','cohortes.id','=' ,'curso_nivels.id_cohorte')
-        ->join('cursos','cursos.id','=','curso_nivels.id_curso')->get();
-        return  response()->json(['CursoNivels'=>$CursoNivels]);
+        //
     }
 
     /**
@@ -49,10 +41,10 @@ class Curso_nivelsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Nota $nota)
     {
         //
     }
@@ -60,10 +52,10 @@ class Curso_nivelsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Nota $nota)
     {
         //
     }
@@ -72,10 +64,10 @@ class Curso_nivelsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Nota $nota)
     {
         //
     }
@@ -83,10 +75,10 @@ class Curso_nivelsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Nota $nota)
     {
         //
     }

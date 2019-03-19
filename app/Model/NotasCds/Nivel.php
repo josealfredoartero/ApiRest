@@ -18,3 +18,12 @@ class Nivel extends Model
         return $this->hasMany(Modulo::class);
     }
 }
+
+
+
+
+
+
+
+
+

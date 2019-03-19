@@ -19,9 +19,7 @@ class EstudianteController extends Controller
     // return estudiante::all();
         $estudiantes =estudiante::select('estudiantes.id','estudiantes.nombres','estudiantes.apellidos','estudiantes.DUI','estudiantes.fecha_nacimiento','estudiantes.genero','estudiantes.direccion','estudiantes.telefono','estudiantes.email','estados.nombre_estado as estado')
         ->join('estados','estados.id','=','estudiantes.id_estado')
-        // ->join('promociones','promociones.id','=','estudiantes.id')
-        // ->join('niveles','niveles.id','=','promociones.id_nivel')
-        ->get();
+        ->join('cohortes','cohortes.id','=','estudiantes.id_cohorte')->get();
         return response()->json(['estudiantes'=>$estudiantes]);
     }
 
@@ -43,9 +41,9 @@ class EstudianteController extends Controller
      */
     public function store(request $request)
     {
+        //instancia al modelo de estudiante
         $estudiante = new Estudiante;
-        // $datos = ["nombres"=>$request->nombres,"apellidos"=>$request->apellidos,"DUI"=>$request->dui,"fecha_nacimiento"=>$request->fechaNac,"genero"=>$request->genero,"direccion"=>$request->direccion,"telefono"=>$request->telefono,"email"=>$request->email,"id_promocion"=>1,"id_estado"=>1];
-        // $estudiante = $datos;
+        //registramos los datos
         $estudiante->nombres=$request->nombres;
         $estudiante->apellidos=$request->apellidos;
         $estudiante->DUI=$request->dui;
@@ -56,18 +54,14 @@ class EstudianteController extends Controller
         $estudiante->email=$request->email;
         $estudiante->id_cohorte=1;
         $estudiante->id_estado=1;
-        // if($estudiante->save()){
-        //     return response()->json(['mensaje'=>"dato agregado"]);
-        // }else{
-        //     return response()->json(['mensaje'=>"dato no agregado"+$th]);
-        // }
+   
         try{
+                //guardamos los datos en la base de datos
                 $estudiante->save();
                 return response()->json(['mensaje'=>"dato agregado"]);    
         }catch(\Throwable $th){
             return response()->json(['mensaje'=>"dato no agregado"+$th]);
         }
-        // return response()->json(["datos"=>$datos]);
     }
 
     /**
@@ -101,7 +95,9 @@ class EstudianteController extends Controller
      */
     public function update(Request $request)
     {
+        //un dato de la base de datos por su id
         $estudiante=estudiante::findorfail($request->id);
+        //actializamos los datos
         $estudiante->nombres = $request->nombres;
         $estudiante->apellidos = $request->apellidos;
         $estudiante->DUI = $request->dui;
@@ -110,9 +106,10 @@ class EstudianteController extends Controller
         $estudiante->direccion = $request->direccion;
         $estudiante->telefono = $request->telefono;
         $estudiante->email = $request->email;
-        // $estudiante-> = $request->nombres;
-        // $estudiante-> = $request->nombres;
+        $estudiante->id_estado=$request->id_estado;
+        $estudiante->id_cohorte=$request->id_cohorte;
         try{
+            //guardamos cambios
             $estudiante->update();
             return response()->json(['mensaje'=>"dato Modificado"]);    
     }catch(\Throwable $th){
@@ -129,13 +126,20 @@ class EstudianteController extends Controller
      */
     public function destroy(request $request)
     {
+        //busqueda por id de un estudiante
         $estudiante=estudiante::findorfail($request->id);
         try{
+            //eliminamos el estudiante
             $estudiante->delete();
             return response()->json(['mensaje'=>"dato eliminado"]);    
         }catch(\Throwable $th){
         return response()->json(['mensaje'=>"dato no eliminado"+$th]);
         }
+    }
+
+    public function estudiante($request)
+    {
+        return response()->json(["estudiante"=>estudiante::find($id)]);
     }
    
 }
