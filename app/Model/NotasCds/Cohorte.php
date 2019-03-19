@@ -3,12 +3,12 @@
 namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\NotasCds\Promocion;
+use App\Model\NotasCds\Curso_nivels;
 
 class Cohorte extends Model
 {
     //
-    public function promocion(){
-        return $this->hasMany(Promocion::class, 'id');
+    public function CursoNivels(){
+        return $this->hasMany(Curso_nivels::class);
     }
 }

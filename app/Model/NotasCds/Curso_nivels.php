@@ -11,7 +11,7 @@ use App\Model\NotasCds\Estudiante;
 class Promocion extends Model
 {
     //
-    protected $table = 'promociones';
+    protected $table = 'curso_nivels';
 
     public function cohorte(){
         return $this->belongsTo(Cohorte::class ,'id');

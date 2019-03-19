@@ -3,18 +3,18 @@
 namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\NotasCds\Promocion;
-use App\Model\NotasCds\Modelo;
+use App\Model\NotasCds\Curso_nivels;
+use App\Model\NotasCds\Modulo;
 
 class Nivel extends Model
 {
     // espesificar la tabla de la base de datos
-    protected $table = 'niveles';
+    protected $table = 'nivels';
 
-    public function promocion(){
-        return $this->hasMany(Promocion::class, 'id');
+    public function CursoNivels(){
+        return $this->hasMany(Curso_nivels::class);
     }
     public function modulo(){
-        return $this->hasMany(Modulo::class, 'id');
+        return $this->hasMany(Modulo::class);
     }
 }

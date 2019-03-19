@@ -54,7 +54,7 @@ class EstudianteController extends Controller
         $estudiante->direccion=$request->direccion;
         $estudiante->telefono=$request->telefono;
         $estudiante->email=$request->email;
-        $estudiante->id_promocion=1;
+        $estudiante->id_cohorte=1;
         $estudiante->id_estado=1;
         // if($estudiante->save()){
         //     return response()->json(['mensaje'=>"dato agregado"]);

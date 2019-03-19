@@ -22,9 +22,9 @@ class CreateEstudiantesTable extends Migration
             $table->string('genero',30);
             $table->string('direccion',100);
             $table->integer('telefono');
-            $table->string('e-mail');
-            $table->integer('id_promocion')->unsigned();
-            $table->foreign('id_promocion')->references('id')->on('promociones');
+            $table->string('email');
+            $table->integer('id_cohorte')->unsigned();
+            $table->foreign('id_cohorte')->references('id')->on('cohortes');
             $table->integer('id_estado')->unsigned();
             $table->foreign('id_estado')->references('id')->on('estados');
             $table->timestamps();

@@ -3,15 +3,13 @@
 namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\NotasCds\Curso;
-use App\Model\NotasCds\promocion;
+use App\Model\NotasCds\Curso_nivels;
 
 class Curso extends Model
 {
     //permitir que modifique los campos en la tabla
     protected $fillable = ['nombre'];
-    public function promocion(){
-        return $this->hasMany(promocion::class, 'id');
+    public function CursoNivels(){
+        return $this->hasMany(Curso_nivels::class, 'id');
     }
-
 }

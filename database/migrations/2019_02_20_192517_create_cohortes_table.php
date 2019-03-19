@@ -16,7 +16,7 @@ class CreateCohortesTable extends Migration
         Schema::create('cohortes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre_cohorte',50);
-            $table->date('fecha_ingreso');
+            $table->date('fechaInicio');
             $table->timestamps();
         });
     }
