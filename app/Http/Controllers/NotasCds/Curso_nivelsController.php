@@ -18,8 +18,8 @@ class Curso_nivelsController extends Controller
      */
     public function index()
     {
-        $CursoNivels= Curso_nivels::select('curso_nivels.id', 'niveles.nombre_nivel as nivel', 'cohortes.nombre_cohorte as cohorte','cursos.nombre as curso')
-        ->join('niveles','niveles.id','=' ,'curso_nivels.id_nivel')
+        $CursoNivels= Curso_nivels::select('curso_nivels.id', 'nivels.nombre_nivel as nivel', 'cohortes.nombre_cohorte as cohorte','cursos.nombre as curso')
+        ->join('nivels','nivels.id','=' ,'curso_nivels.id_nivel')
         ->join('cohortes','cohortes.id','=' ,'curso_nivels.id_cohorte')
         ->join('cursos','cursos.id','=','curso_nivels.id_curso')->get();
         return  response()->json(['CursoNivels'=>$CursoNivels]);

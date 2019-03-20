@@ -15,7 +15,7 @@ class cursosController extends Controller{
     public function index(){
         
         $cursos=Curso::all();
-    //     
+     
     }
     
     public function create(){

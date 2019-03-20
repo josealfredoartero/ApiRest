@@ -24,9 +24,9 @@ class CreateEstudiantesTable extends Migration
             $table->integer('telefono');
             $table->string('email');
             $table->integer('id_cohorte')->unsigned();
-            $table->foreign('id_cohorte')->references('id')->on('cohortes');
+            $table->foreign('id_cohorte')->references('id')->on('cohortes')->onUpdate("cascade");
             $table->integer('id_estado')->unsigned();
-            $table->foreign('id_estado')->references('id')->on('estados');
+            $table->foreign('id_estado')->references('id')->on('estados')->onUpdate("cascade");
             $table->timestamps();
         });
     }

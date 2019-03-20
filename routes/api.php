@@ -30,7 +30,7 @@ route::group([
     'prefix' => 'notas',
 ],
  function(){
-    Route::resource('cursos','NotasCds\cursosController');
+    Route::resource('curso','NotasCds\CursoController');
     Route::resource('estudiante','NotasCds\EstudianteController');
     route::put("estudiante/update","NotasCds\EstudianteController@update");
     route::delete("estudiante/delete","NotasCds\EstudianteController@destroy");
@@ -39,5 +39,5 @@ route::group([
     route::resource("nota","NotasCds\NotaController");
     route::resource("cohorte","NotasCds\CohorteController");
     route::resource("actividad","NotasCds\ActividadController");
-    
+    route::get("cursoNivel","NotasCds\Curso_nivelsController@index");
  });

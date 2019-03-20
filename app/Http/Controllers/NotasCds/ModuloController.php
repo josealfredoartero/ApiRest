@@ -14,7 +14,7 @@ class ModuloController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $modulos=Modulo::select('modulos.id','modulos.nombre','docentes.nombre as docente')
+        $modulos=Modulo::select('modulos.id','modulos.nombre','docentes.nombre as docente','nivels.nombre_nivel as nivel','cursos.nombre as curso')
         ->join('docentes','docentes.id','=','modulos.id_docente')
         ->join('nivels','nivels.id','=','modulos.id_nivel')
         ->join('cursos','cursos.id','=','modulos.id_curso')->get();

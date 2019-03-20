@@ -15,7 +15,11 @@ class ActividadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $actividades=actividads::select('actividades.id','actividades.nombre_actividad','actividades.id_notas','actividades.id_modulo')
+        $actividades = actividad::select('actividads.id','actividads.nombre_actividad as actividad','n.nota as nota','m.nombre as modulo')
+        ->join('notas as n','n.id','=','actividads.id_nota')
+        ->join('modulos as m','m.id','=','actividads.id_modulo')->get();
+        return response()->json(['actividades'=>$actividades]);
+
     }
 
     /**
@@ -34,9 +38,14 @@ class ActividadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        // instancia al modelo de actividades
+        $actividades= new Actividad;
+        // registramos los datos
+        $actividades->nombre_actividad=$request->nombre_actividad;
+        $actividades->id_nota=$request->id_nota;
+        $actividades->id_modulo=$request->id_modulo;
+
     }
 
     /**

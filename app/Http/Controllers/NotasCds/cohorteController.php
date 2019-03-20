@@ -4,13 +4,13 @@ namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\NotasCds\curso;
+use App\Model\NotasCds\cohorte;
 
 class cohorteController extends Controller
 {
     public function index()
     {
-        return response()->json(["cohortes"=>curso::all()]);
+        return response()->json(["cohortes"=>cohorte::all()]);
     }
 
     /**
@@ -31,7 +31,16 @@ class cohorteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cohorte = new cohorte;
+        $cohorte->nombre_cohorte = $request->nombre;
+        $cohorte->fechaInicio = $request->fechaInicio;
+        try {
+            $cohorte->save();
+            return response()->json(["mensaje"=>"Dato Agregado"]);
+        } catch (\Throwable $th) {
+            return response()->json(["mensaje"=>"Dato No Agregado"]);
+        }
+
     }
 
     /**
@@ -63,9 +72,17 @@ class cohorteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $cohorte = cohorte::find($request->id);
+        $cohorte->nombre_cohorte = $request->nombre;
+        $cohorte->fechaInicio = $request->fechaInicio;
+        try {
+            $cohorte->update();
+            return response()->json(["mensaje"=>"Dato Agregado"]);
+        } catch (\Throwable $th) {
+            return response()->json(["mensaje"=>"Dato No Agregado"]);
+        }
     }
 
     /**
@@ -76,6 +93,12 @@ class cohorteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cohorte = cohorte::find($id->id);
+        try {
+            $cohorte->update();
+            return response()->json(["mensaje"=>"Dato Agregado"]);
+        } catch (\Throwable $th){
+            return response()->json(["mensaje"=>"Dato No Agregado"]);
+        }
     }
 }

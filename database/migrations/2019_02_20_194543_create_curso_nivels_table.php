@@ -16,11 +16,11 @@ class CreateCursoNivelsTable extends Migration
         Schema::create('curso_nivels', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_cohorte')->unsigned()->nullable();
-            $table->foreign('id_cohorte')->references('id')->on('cohortes');
+            $table->foreign('id_cohorte')->references('id')->on('cohortes')->onUpdate("cascade");
             $table->integer('id_curso')->unsigned()->nullable();
-            $table->foreign('id_curso')->references('id')->on('cursos');
+            $table->foreign('id_curso')->references('id')->on('cursos')->onUpdate("cascade");
             $table->integer('id_nivel')->unsigned()->nullabel();
-            $table->foreign('id_nivel')->references('id')->on('nivels');
+            $table->foreign('id_nivel')->references('id')->on('nivels')->onUpdate("cascade");
             $table->timestamps();
            
             

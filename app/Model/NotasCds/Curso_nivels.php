@@ -7,7 +7,7 @@ use App\Model\NotasCds\Cohorte;
 use App\Model\NotasCds\Curso;
 use App\Model\NotasCds\Nivel;
 
-class Promocion extends Model
+class curso_nivels extends Model
 {
     //
     protected $table = 'curso_nivels';

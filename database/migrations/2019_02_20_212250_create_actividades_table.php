@@ -17,7 +17,7 @@ class CreateActividadesTable extends Migration
             $table->increments('id');
             $table->string('nombre_actividad',100);
             $table->integer('id_modulo')->unsigned()->nullable();
-            $table->foreign('id_modulo')->references('id')->on('modulos');
+            $table->foreign('id_modulo')->references('id')->on('modulos')->onUpdate("cascade");
             $table->timestamps();
         });
     }
