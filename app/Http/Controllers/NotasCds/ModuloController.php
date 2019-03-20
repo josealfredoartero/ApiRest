@@ -13,7 +13,7 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

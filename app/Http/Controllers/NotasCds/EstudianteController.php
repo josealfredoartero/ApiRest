@@ -17,12 +17,12 @@ class EstudianteController extends Controller
     {
         //
     // return estudiante::all();
-        $estudiantes =estudiante::select('estudiantes.id','estudiantes.nombres','estudiantes.apellidos','estudiantes.DUI','estudiantes.fecha_nacimiento','estudiantes.genero','estudiantes.direccion','estudiantes.telefono','estudiantes.email','estados.nombre_estado as estado')
-        ->join('estados','estados.id','=','estudiantes.id_estado')
-        ->join('cohortes','cohortes.id','=','estudiantes.id_cohorte')->get();
+        $estudiantes = estudiante::select('estudiantes.id','estudiantes.nombres','estudiantes.apellidos','estudiantes.DUI','estudiantes.fecha_nacimiento','estudiantes.genero','estudiantes.direccion','estudiantes.telefono','estudiantes.email','c.nombre_cohorte as cohorte','e.nombre_estado as estado')
+        ->join('estados as e','e.id','=','estudiantes.id_estado')
+        ->join('cohortes as c','c.id','=','estudiantes.id_cohorte')->get();
         return response()->json(['estudiantes'=>$estudiantes]);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -112,9 +112,9 @@ class EstudianteController extends Controller
             //guardamos cambios
             $estudiante->update();
             return response()->json(['mensaje'=>"dato Modificado"]);    
-    }catch(\Throwable $th){
+        }catch(\Throwable $th){
         return response()->json(['mensaje'=>"dato no Modificado"+$th]);
-    }
+        }
         
     }
 

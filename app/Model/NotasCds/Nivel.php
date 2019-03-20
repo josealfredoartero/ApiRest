@@ -11,7 +11,7 @@ class Nivel extends Model
     // espesificar la tabla de la base de datos
     protected $table = 'nivels';
 
-    public function CursoNivels(){
+    public function Curso_nivels(){
         return $this->hasMany(Curso_nivels::class);
     }
     public function modulo(){
