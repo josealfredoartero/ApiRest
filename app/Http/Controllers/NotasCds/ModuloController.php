@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Model\NotasCds\Modulo;
 
 class ModuloController extends Controller
 {
@@ -11,9 +13,13 @@ class ModuloController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $modulos=Modulo::select('modulos.id','modulos.nombre','docentes.nombre as docente')
+        ->join('docentes','docentes.id','=','modulos.id_docente')
+        ->join('nivels','nivels.id','=','modulos.id_nivel')
+        ->join('cursos','cursos.id','=','modulos.id_curso')->get();
+        return response()->json(['modulos'=>$modulos]);
+       
     }
 
     /**
@@ -32,9 +38,28 @@ class ModuloController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+
+        // instancia al modelo de modulos
+        $modulo= new Modulo;
+        // regristro de datos
+        $modulo->nombre=$request->nombre;
+        $modulo->id_docente=$request->id_docente;
+        $modulo->id_nivel=$request->id_nivel;
+        $modulo->id_curso=$request->id_curso;
+
+        try{
+            // guardamos los datos
+            $modulo=save();
+            return response()->json(['mensaje'=>"Datos agregado"]);
+        }catch(\throwable $th){
+            return response()->json(['mensaje'=>"Datos no agregado"+$th]);
+        }
+        
+
+
+
+
     }
 
     /**
@@ -68,7 +93,22 @@ class ModuloController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // un dato de ka db por su id
+        $modulo=modulo::findofail($request->id);
+        //actualizamos los datos
+        $modulo->nombre=$request->nombre;
+        $modulo->id_docente=$request->id_docente;
+        $modulo->id_nivel=$request->id_nivel;
+        $modulo->id_curso=$request->id_curso;
+
+        try{
+            //aguardamos los cambios
+            $modulo->update();
+            return response()->json(['mensaje'=>"dato Modificado"]);
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"dato no Modificado"+$th]);
+        }
+
     }
 
     /**
@@ -77,8 +117,19 @@ class ModuloController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(){
+        // busqueda de id por modulo
+        $modulo=modulo::findorfail($request->id);
+        try{
+            //eliminar modulo
+            $modulo->delete();
+            return response()->json(['mensaje'=>"dato eliminado"]); 
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"dato no eliminado"]);
+        }
+    }
+
+    public function modulo($request){
+        return response()->json(["modulo"=>modulo::find($id)]);
     }
 }

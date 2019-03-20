@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Model\NotasCds\Actividad;
+
 
 class ActividadController extends Controller
 {
@@ -11,9 +14,8 @@ class ActividadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $actividades=actividads::select('actividades.id','actividades.nombre_actividad','actividades.id_notas','actividades.id_modulo')
     }
 
     /**

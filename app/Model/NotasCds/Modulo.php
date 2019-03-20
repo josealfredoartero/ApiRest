@@ -10,6 +10,7 @@ use App\Model\NotasCds\nivel;
 class Modulo extends Model
 {
     //
+    // protected $fillable=[];
     public function docente(){
         return $this->belongsTo(docente::class, 'id');
     }

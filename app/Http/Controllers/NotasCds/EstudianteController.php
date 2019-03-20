@@ -127,13 +127,13 @@ class EstudianteController extends Controller
     public function destroy(request $request)
     {
         //busqueda por id de un estudiante
-        $estudiante=estudiante::findorfail($request->id);
+        $estudiante = estudiante::findorfail($request->id);
         try{
             //eliminamos el estudiante
             $estudiante->delete();
             return response()->json(['mensaje'=>"dato eliminado"]);    
         }catch(\Throwable $th){
-        return response()->json(['mensaje'=>"dato no eliminado"+$th]);
+        return response()->json(['mensaje'=>"dato no eliminado"]);
         }
     }
 
