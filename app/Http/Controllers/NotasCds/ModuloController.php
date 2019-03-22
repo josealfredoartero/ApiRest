@@ -132,4 +132,9 @@ class ModuloController extends Controller
     public function modulo($request){
         return response()->json(["modulo"=>modulo::find($id)]);
     }
+    public function CNModulo($request)
+    {
+        $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
+        return response()->json(["modulos"=>$modulo]);
+    }
 }

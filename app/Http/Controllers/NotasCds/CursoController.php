@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\NotasCds\Curso;
 
-class cursosController extends Controller{
+class cursoController extends Controller{
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +14,7 @@ class cursosController extends Controller{
      */
     public function index(){
         
-        $cursos=Curso::all();
-     
+        return response()->json(["curso"=>Curso::all("id", "nombre")]);
     }
     
     public function create(){
@@ -118,5 +117,14 @@ class cursosController extends Controller{
             window.location.href='/inicio';
             </script>";
         }
+    }
+
+    public function cohorte($request)
+    {
+        $cohorte = curso::select("c.id","c.nombre_cohorte as cohorte", "cn.id_nivel")
+        ->join('curso_nivels as cn','cn.id_curso','=','cursos.id')
+        ->join('cohortes as c','c.id','=','cn.id_cohorte')->where("cursos.id",$request->id_curso)->where("cn.id_nivel",1)
+        ->get();
+        return response()->json(["cohortes"=>$cohorte]);
     }
 }

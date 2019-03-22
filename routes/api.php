@@ -39,5 +39,12 @@ route::group([
     route::resource("nota","NotasCds\NotaController");
     route::resource("cohorte","NotasCds\CohorteController");
     route::resource("actividad","NotasCds\ActividadController");
-    route::get("cursoNivel","NotasCds\Curso_nivelsController@index");
+    // route::get("cursoNivel","NotasCds\Curso_nivelsController@index");
+    route::get("curso/cohorte","NotasCds\CursoController@cohorte");
+    // route::get("modulos/nivel/{id}","NotasCds\ModuloController@NModulo");
+    // route::get('cohorte/nivel/{id}/{id}',"NotasCds\ModuloController@CNivel");
+    route::get('nivel','NotasCds\NivelController@index');
+    route::post('cohorte/estudiantes','NotasCds\EstudianteController@estudiantes');
+    route::post('modulos/cursos','NotasCds\ModuloController@CNModulo');
+    route::post('actividad/modulo','NotasCds\ActididadController@MActividades');
  });

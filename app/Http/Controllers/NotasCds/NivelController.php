@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
+use App\Model\NotasCds\Nivel;
 use App\Http\Controllers\Controller;
-use App\Model\NotasCds\cohorte;
 
-class CohorteController extends Controller
+class NivelController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        return response()->json(["cohortes"=>cohorte::all()]);
+        return response()->json(["niveles"=>Nivel::all("id", "nombre_nivel as nivel")]);
     }
 
     /**
@@ -31,16 +36,7 @@ class CohorteController extends Controller
      */
     public function store(Request $request)
     {
-        $cohorte = new cohorte;
-        $cohorte->nombre_cohorte = $request->nombre;
-        $cohorte->fechaInicio = $request->fechaInicio;
-        try {
-            $cohorte->save();
-            return response()->json(["mensaje"=>"Dato Agregado"]);
-        } catch (\Throwable $th) {
-            return response()->json(["mensaje"=>"Dato No Agregado"]);
-        }
-
+        //
     }
 
     /**
@@ -72,17 +68,9 @@ class CohorteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $cohorte = cohorte::find($request->id);
-        $cohorte->nombre_cohorte = $request->nombre;
-        $cohorte->fechaInicio = $request->fechaInicio;
-        try {
-            $cohorte->update();
-            return response()->json(["mensaje"=>"Dato Agregado"]);
-        } catch (\Throwable $th) {
-            return response()->json(["mensaje"=>"Dato No Agregado"]);
-        }
+        //
     }
 
     /**
@@ -91,15 +79,9 @@ class CohorteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($request)
+    public function destroy($id)
     {
-        $cohorte = cohorte::find($request->id);
-        try {
-            $cohorte->update();
-            return response()->json(["mensaje"=>"Dato Agregado"]);
-        } catch (\Throwable $th){
-            return response()->json(["mensaje"=>"Dato No Agregado"]);
-        }
+        //
     }
 
     

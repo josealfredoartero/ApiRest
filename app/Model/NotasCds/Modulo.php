@@ -3,9 +3,9 @@
 namespace App\Model\NotasCds;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\NotasCds\docente;
-use App\Model\NotasCds\actividad;
-use App\Model\NotasCds\nivel;
+use App\Model\NotasCds\Docente;
+use App\Model\NotasCds\Actividad;
+use App\Model\NotasCds\Nivel;
 
 class Modulo extends Model
 {

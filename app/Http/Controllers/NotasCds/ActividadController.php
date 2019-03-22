@@ -18,6 +18,7 @@ class ActividadController extends Controller
         $actividades = actividad::select('actividads.id','actividads.nombre_actividad as actividad','n.nota as nota','m.nombre as modulo')
         ->join('notas as n','n.id','=','actividads.id_nota')
         ->join('modulos as m','m.id','=','actividads.id_modulo')->get();
+        //->join('modulos as m','m.id','=','actividads.id_modulo')->get()->dd();
         return response()->json(['actividades'=>$actividades]);
 
     }
@@ -40,12 +41,18 @@ class ActividadController extends Controller
      */
     public function store(Request $request){
         // instancia al modelo de actividades
-        $actividades= new Actividad;
+        $actividad= new Actividad;
         // registramos los datos
-        $actividades->nombre_actividad=$request->nombre_actividad;
-        $actividades->id_nota=$request->id_nota;
-        $actividades->id_modulo=$request->id_modulo;
-
+        $actividad->nombre_actividad=$request->nombre_actividad;
+        $actividad->id_nota=$request->id_nota;
+        $actividad->id_modulo=$request->id_modulo;
+        try{
+            //guardamos los datos en la base de datos
+            $actividad->save();
+            return response()->json(['mensaje'=>"Datos Agregado"]);
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"Datos no agregado"+$th]);
+        }
     }
 
     /**
@@ -77,9 +84,20 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request){
+        // un dato de la base de datos por su id
+        $actividad = actividad::findorfail($request->id);
+        // actualizamos los datos
+        $actividad->nombre_actividad = $request->nombre_actividad;
+        $actividad->id_nota = $request->id_nota;
+        $actividad->id_modulo = $request->id_modulo;
+        try{
+            // guardamos los cambios
+            $actividad->update();
+            return response()->json(['mensaje'=>"Dato Modificado"]);
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"Dato no Modificado"]);
+        }
     }
 
     /**
@@ -88,8 +106,25 @@ class ActividadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(request $request){
+        //busqueda por id de actividad
+        $actividad = actividad::findorfail($request->id);
+        try{
+            // eliminamos la actividad
+            $actividad->delete();
+            return response()->json(['mensaje'=>"dato eliminado"]);    
+        }catch(\Throwable $th){
+        return response()->json(['mensaje'=>"dato no eliminado"]);
+        }
+    }
+
+    
+    public function actividad($request){
+        return response()->json(['actividad'=>actividad::find($id)]);
+    }
+
+    public function MActividades($request)
     {
-        //
+        $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',$request)->get();
     }
 }

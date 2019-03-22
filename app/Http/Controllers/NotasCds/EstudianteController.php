@@ -141,5 +141,12 @@ class EstudianteController extends Controller
     {
         return response()->json(["estudiante"=>estudiante::find($id)]);
     }
+
+    public function estudiantes($request)
+    {
+        $estudiantes= Estudiante::select("estudiantes.id","estudiantes.nombres",'estudiantes.apellidos')->join('cohortes as c','c.id', '=', 'estudiantes.id_cohorte')
+        ->where('c.id',$request->id_cohorte)->get();
+        return response()->json(["estudiantes"=>$estudiantes]);
+    }
    
 }
