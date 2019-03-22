@@ -126,5 +126,6 @@ class ActividadController extends Controller
     public function MActividades($request)
     {
         $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',$request)->get();
+        return response()->json(["actividades"=>$actividades]);
     }
 }
