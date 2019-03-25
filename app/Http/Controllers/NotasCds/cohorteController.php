@@ -4,7 +4,7 @@ namespace App\Http\Controllers\NotasCds;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\NotasCds\cohorte;
+use App\Model\NotasCds\Cohorte;
 
 class CohorteController extends Controller
 {
@@ -33,6 +33,7 @@ class CohorteController extends Controller
     {
         $cohorte = new cohorte;
         $cohorte->nombre_cohorte = $request->nombre;
+        
         $cohorte->fechaInicio = $request->fechaInicio;
         try {
             $cohorte->save();
@@ -102,5 +103,8 @@ class CohorteController extends Controller
         }
     }
 
-    
+    public function nota()
+    {
+        return response()->json(nota::all());
+    }
 }

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NotasCds;
 
-use App\Nota;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Model\NotasCds\nota;
+
 
 class NotaController extends Controller
 {
@@ -14,7 +16,7 @@ class NotaController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -41,10 +43,10 @@ class NotaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Nota  $nota
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Nota $nota)
+    public function show($id)
     {
         //
     }
@@ -52,10 +54,10 @@ class NotaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Nota  $nota
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Nota $nota)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +66,10 @@ class NotaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Nota  $nota
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Nota $nota)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,11 +77,32 @@ class NotaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Nota  $nota
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Nota $nota)
+    public function destroy($id)
     {
         //
     }
+    public function guardar(request $request)
+    {
+        try{
+            foreach ($request->datos as $item){
+                $notas = new Nota;
+                // echo $item->nota;
+                $notas->id_estudiante = $item["id_estudiante"];
+                $notas->id_actividad = $item['id_actividad'];
+                $notas->nota = $item['nota'];
+                //guardamos los datos en la base de datos
+                $notas->save(); 
+            }  
+            return response()->json(['mensaje'=>"dato agregado"]);    
+        }catch(\Throwable $th){
+            return response()->json(['mensaje'=>"dato no agregado",$th]);
+        }  
+        
+        
+       
+    }
+    
 }
