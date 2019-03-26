@@ -5,6 +5,8 @@ namespace App\Http\Controllers\NotasCds;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\NotasCds\Estudiante;
+use App\Model\NotasCds\nota;
+use App\Model\NotasCds\Modulo;
 
 class EstudianteController extends Controller
 {
@@ -137,16 +139,47 @@ class EstudianteController extends Controller
         }
     }
 
-    public function estudiante($request)
+    public function estudiante($id)
     {
         return response()->json(["estudiante"=>estudiante::find($id)]);
     }
 
-    public function estudiantes($request)
+    public function estudiantes($id)
     {
         $estudiantes= Estudiante::select("estudiantes.id","estudiantes.nombres",'estudiantes.apellidos')->join('cohortes as c','c.id', '=', 'estudiantes.id_cohorte')
-        ->where('c.id',$request->id_cohorte)->get();
+        ->where('c.id',$id)->get();
         return response()->json(["estudiantes"=>$estudiantes]);
+    }
+
+    public function estudianteNota($id)
+    {
+        $estudiante = estudiante::all("id","nombres","apellidos")->where("id",$id);
+        foreach ($estudiante as $item) {
+            $modulo=[];
+            $modulos=[];
+            $modul = nota::select("m.id","m.nombre as modulo")->join("estudiantes as e","e.id","=","notas.id_estudiante")
+            ->join("actividads as a","a.id","=","notas.id_actividad")->join("modulos as m","m.id","=","a.id_modulo")->orderby("id")->where("e.id",$item->id)->get();
+            $n="";
+            foreach ($modul as $s) {
+                if($n == ""){
+                    $modulos[]=$s;
+                    $n = $s;
+                }
+                if($s != $n){
+                    $modulos[]=$s;
+                    $n=$s;
+                }
+            }
+             foreach ($modulos as $value) {
+                // if($modulo == null){
+                    $notas=nota::select("a.nombre_actividad as actividad","notas.nota")->join("actividads as a","a.id","notas.id_actividad")
+                    ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->get();
+                    $modulo[]=["id"=>$value->id,"modulo"=>$value->modulo,"notas"=>$notas];
+             }
+            $item["modulos"]=$modulo;
+        } 
+        return response()->json(["estudiante"=>$estudiante]);
+
     }
    
 }

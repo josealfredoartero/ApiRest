@@ -44,9 +44,10 @@ route::group([
     // route::get("modulos/nivel/{id}","NotasCds\ModuloController@NModulo");
     // route::get('cohorte/nivel/{id}/{id}',"NotasCds\ModuloController@CNivel");
     route::get('nivel','NotasCds\NivelController@index');
-    route::post('cohorte/estudiantes','NotasCds\EstudianteController@estudiantes');
+    route::get('cohorte/estudiantes/{id}','NotasCds\EstudianteController@estudiantes');
     route::post('modulos/cursos','NotasCds\ModuloController@CNModulo');
-    route::post('actividad/modulo','NotasCds\ActididadController@MActividades');
+    route::post('actividades/modulo','NotasCds\ActividadController@actividades');
     route::post('agregar','NotasCds\NotaController@guardar');
+    route::get("notas/estudiante/{id}","NotasCds\EstudianteController@estudianteNota");
 
  });

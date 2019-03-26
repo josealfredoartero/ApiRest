@@ -117,7 +117,7 @@ class ModuloController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(){
+    public function destroy(request $request){
         // busqueda de id por modulo
         $modulo=modulo::findorfail($request->id);
         try{
@@ -129,10 +129,10 @@ class ModuloController extends Controller
         }
     }
 
-    public function modulo($request){
-        return response()->json(["modulo"=>modulo::find($id)]);
+    public function modulo(request $request){
+        return response()->json(["modulo"=>modulo::find($request->id)]);
     }
-    public function CNModulo($request)
+    public function CNModulo(request $request)
     {
         $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
         return response()->json(["modulos"=>$modulo]);

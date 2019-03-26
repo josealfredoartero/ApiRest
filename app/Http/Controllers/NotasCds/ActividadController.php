@@ -119,13 +119,14 @@ class ActividadController extends Controller
     }
 
     
-    public function actividad($request){
-        return response()->json(['actividad'=>actividad::find($id)]);
-    }
+    // public function actividad($request){
+    //     return response()->json(['actividad'=>actividad::find($request)]);
+    // }
 
-    public function MActividades($request)
+    public function actividades()
     {
-        $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',$request)->get();
+        $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',1)->get();
         return response()->json(["actividades"=>$actividades]);
+        // echo "dsnfweiofjew";
     }
 }
