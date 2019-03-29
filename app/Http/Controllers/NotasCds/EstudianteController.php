@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\NotasCds\Estudiante;
 use App\Model\NotasCds\nota;
-use App\Model\NotasCds\Modulo;
+use App\Model\NotasCds\modulo;
+use App\Model\NotasCds\curso;
+use App\Model\NotasCds\curso_nivels;
 
 class EstudianteController extends Controller
 {
@@ -139,46 +141,83 @@ class EstudianteController extends Controller
         }
     }
 
-    public function estudiante($id)
-    {
-        return response()->json(["estudiante"=>estudiante::find($id)]);
-    }
+    // public function estudiante($id)
+    // {
+    //     return response()->json(["estudiante"=>estudiante::find($id)]);
+    // }
 
     public function estudiantes($id)
     {
-        $estudiantes= Estudiante::select("estudiantes.id","estudiantes.nombres",'estudiantes.apellidos')->join('cohortes as c','c.id', '=', 'estudiantes.id_cohorte')
+        $estudiantes = Estudiante::select("estudiantes.id","estudiantes.nombres",'estudiantes.apellidos')->join('cohortes as c','c.id', '=', 'estudiantes.id_cohorte')
         ->where('c.id',$id)->get();
+        $cont=1;
+        foreach ($estudiantes as $key) {
+            $key["nota"] =$cont;
+            $cont ++;
+        }
         return response()->json(["estudiantes"=>$estudiantes]);
     }
 
-    public function estudianteNota($id)
+    public function estudianteNota(request $request)
     {
-        $estudiante = estudiante::all("id","nombres","apellidos")->where("id",$id);
-        foreach ($estudiante as $item) {
-            $modulo=[];
-            $modulos=[];
-            $modul = nota::select("m.id","m.nombre as modulo")->join("estudiantes as e","e.id","=","notas.id_estudiante")
-            ->join("actividads as a","a.id","=","notas.id_actividad")->join("modulos as m","m.id","=","a.id_modulo")->orderby("id")->where("e.id",$item->id)->get();
-            $n="";
-            foreach ($modul as $s) {
-                if($n == ""){
-                    $modulos[]=$s;
-                    $n = $s;
-                }
-                if($s != $n){
-                    $modulos[]=$s;
-                    $n=$s;
-                }
+        $estudiante = estudiante::select("id","nombres","apellidos")->where("id",$request->id_estudiante)->get();
+        $cohorte = estudiante::select("c.id")->join("cohortes as c","c.id","=","estudiantes.id_cohorte")
+        ->where("estudiantes.id",$request->id_estudiante)->get();
+        $modulo=[];
+        $nivel ="";
+        $curso="";
+        $id_curso="";
+        foreach ($cohorte as $c) {
+            $id_curso = curso::select("cursos.id")->join("curso_nivels as s","s.id_curso","=","cursos.id")
+            ->where("s.id_cohorte",$c["id"])->get();
+            foreach ($id_curso as $id_c) {
+                $idC = $id_c["id"];
             }
-             foreach ($modulos as $value) {
-                // if($modulo == null){
-                    $notas=nota::select("a.nombre_actividad as actividad","notas.nota")->join("actividads as a","a.id","notas.id_actividad")
-                    ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->get();
-                    $modulo[]=["id"=>$value->id,"modulo"=>$value->modulo,"notas"=>$notas];
-             }
-            $item["modulos"]=$modulo;
-        } 
+        }
+
+        $modulos = modulo::select("modulos.id","modulos.nombre as modulo","c.nombre as curso","n.nombre_nivel")->join("nivels as n","n.id","=","modulos.id_nivel")
+        ->join("cursos as c","c.id","=","modulos.id_curso")
+        ->where("n.id",$request->id_nivel)->where("c.id",$idC)->get();
+        
+        foreach ($modulos as $value) {
+            $curso =$value["curso"];
+            $nivel=$value["nombre_nivel"];
+            $notas=nota::select("a.nombre_actividad as actividad","notas.nota")->join("actividads as a","a.id","notas.id_actividad")
+            ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->get();
+            $modulo[]=["modulo"=>$value["modulo"],"notas"=>$notas];
+        }
+        foreach ($estudiante as $key) {
+            $key["curso"]=$curso;
+            $key["nivel"]=$nivel;
+            $key["modulos"]=$modulo;
+        }
         return response()->json(["estudiante"=>$estudiante]);
+
+    //     $estudiante = estudiante::all("id","nombres","apellidos")->where("id",$id);
+    //     foreach ($estudiante as $item) {
+    //         $modulo=[];
+    //         $modulos=[];
+    //         $modul = nota::select("m.id","m.nombre as modulo")->join("estudiantes as e","e.id","=","notas.id_estudiante")
+    //         ->join("actividads as a","a.id","=","notas.id_actividad")->join("modulos as m","m.id","=","a.id_modulo")->orderby("id")->where("e.id",$item->id)->get();
+    //         $n="";
+    //         foreach ($modul as $s) {
+    //             if($n == ""){
+    //                 $modulos[]=$s;
+    //                 $n = $s;
+    //             }
+    //             if($s != $n){
+    //                 $modulos[]=$s;
+    //                 $n=$s;
+    //             }
+    //         }
+    //          foreach ($modulos as $value) {
+    //                 $notas=nota::select("a.nombre_actividad as actividad","notas.nota")->join("actividads as a","a.id","notas.id_actividad")
+    //                 ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->get();
+    //                 $modulo[]=["id"=>$value->id,"modulo"=>$value->modulo,"notas"=>$notas];
+    //          }
+    //         $item["modulos"]=$modulo;
+    //     } 
+    //     return response()->json(["estudiante"=>$estudiante]);
 
     }
    

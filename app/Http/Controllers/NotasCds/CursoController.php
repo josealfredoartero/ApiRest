@@ -119,7 +119,7 @@ class cursoController extends Controller{
         }
     }
 
-    public function cohorte($request)
+    public function cohorte(request $request)
     {
         $cohorte = curso::select("c.id","c.nombre_cohorte as cohorte", "cn.id_nivel")
         ->join('curso_nivels as cn','cn.id_curso','=','cursos.id')

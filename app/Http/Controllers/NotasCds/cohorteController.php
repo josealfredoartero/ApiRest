@@ -10,7 +10,7 @@ class CohorteController extends Controller
 {
     public function index()
     {
-        return response()->json(["cohortes"=>cohorte::all()]);
+        return response()->json(["cohortes"=>cohorte::all("id","nombre_cohorte as cohote")]);
     }
 
     /**

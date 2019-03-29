@@ -5,6 +5,8 @@ namespace App\Http\Controllers\NotasCds;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\NotasCds\Modulo;
+use App\Model\NotasCds\Estudiante;
+use App\Model\NotasCds\nota;
 
 class ModuloController extends Controller
 {
@@ -137,4 +139,28 @@ class ModuloController extends Controller
         $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
         return response()->json(["modulos"=>$modulo]);
     }
+
+    public function NotasModulo(){
+        $estudiantes = estudiante::select("id","nombres","apellidos")->where("id_cohorte",1)->get();
+        $notas="";
+        $titulos=[];
+        foreach ($estudiantes as $value) {
+            $actividades=Modulo::select("a.id","a.nombre_actividad as nombre","modulos.id as id_modulo","modulos.nombre as modulo")
+            ->join("actividads as a","a.id_modulo","=","modulos.id")
+            ->where("modulos.id",2)->get();
+            foreach ($actividades as $item) {
+                $modulo = $item["modulo"];
+                $id_modulo=$item->id_modulo;
+                $titulos[]=$item->nombre;
+                $notas = nota::select()->where("id_actividad",$item["id"])->get();
+            }
+            $titulos[]=$modulo;
+            $datos=[$estudiantes,$titulos];
+            // ->where("n.id_estudiante",$value["id"])->get();
+            // $value["notas"]=$notas;
+        }
+        
+        return response()->json($datos);
+    }
+    
 }
