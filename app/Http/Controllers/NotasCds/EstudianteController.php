@@ -12,11 +12,6 @@ use App\Model\NotasCds\curso_nivels;
 
 class EstudianteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
@@ -26,25 +21,10 @@ class EstudianteController extends Controller
         ->join('cohortes as c','c.id','=','estudiantes.id_cohorte')->get();
         return response()->json(['estudiantes'=>$estudiantes]);
     }
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(request $request)
     {
+        try{
         //instancia al modelo de estudiante
         $estudiante = new Estudiante;
         //registramos los datos
@@ -56,78 +36,46 @@ class EstudianteController extends Controller
         $estudiante->direccion=$request->direccion;
         $estudiante->telefono=$request->telefono;
         $estudiante->email=$request->email;
-        $estudiante->id_cohorte=1;
+        $estudiante->id_cohorte=$request->id_cohorte;
         $estudiante->id_estado=1;
-   
-        try{
-                //guardamos los datos en la base de datos
-                $estudiante->save();
-                return response()->json(['mensaje'=>"dato agregado"]);    
+        
+        //guardamos los datos en la base de datos
+        $estudiante->save();
+            return response()->json(['mensaje'=>"dato agregado"]);    
         }catch(\Throwable $th){
             return response()->json(['mensaje'=>"dato no agregado"+$th]);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
-        //un dato de la base de datos por su id
-        $estudiante=estudiante::findorfail($request->id);
-        //actializamos los datos
-        $estudiante->nombres = $request->nombres;
-        $estudiante->apellidos = $request->apellidos;
-        $estudiante->DUI = $request->dui;
-        $estudiante->fecha_nacimiento = $request->fechaNac;
-        $estudiante->genero = $request->genero;
-        $estudiante->direccion = $request->direccion;
-        $estudiante->telefono = $request->telefono;
-        $estudiante->email = $request->email;
-        $estudiante->id_estado=$request->id_estado;
-        $estudiante->id_cohorte=$request->id_cohorte;
-        try{
+        if($request["id"] && $request["nombres"] && $request["apellidos"] && $request["dui"] && $request["fechaNac"] && $request["genero"] && $request["direccion"] && $request["telefono"] && $request["email"] && $request["id_estado"] && $request["id_cohorte"] != null){
+            try{
+            //un dato de la base de datos por su id
+            $estudiante=estudiante::findorfail($request->id);
+            //actializamos los datos
+            $estudiante->nombres = $request->nombres;
+            $estudiante->apellidos = $request->apellidos;
+            $estudiante->DUI = $request->dui;
+            $estudiante->fecha_nacimiento = $request->fechaNac;
+            $estudiante->genero = $request->genero;
+            $estudiante->direccion = $request->direccion;
+            $estudiante->telefono = $request->telefono;
+            $estudiante->email = $request->email;
+            $estudiante->id_estado=$request->id_estado;
+            $estudiante->id_cohorte=$request->id_cohorte;
             //guardamos cambios
             $estudiante->update();
-            return response()->json(['mensaje'=>"dato Modificado"]);    
-        }catch(\Throwable $th){
-        return response()->json(['mensaje'=>"dato no Modificado"]);
+                return response()->json(['mensaje'=>"Dato Modificado"]);    
+            }catch(\Throwable $th){
+                return response()->json(['mensaje'=>"Dato no Modificado"]);
+            }
+        }else{
+            return response()->json(["mensaje"=>"Complete todos los campos"]);
         }
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(request $request)
     {
         //busqueda por id de un estudiante
@@ -135,16 +83,11 @@ class EstudianteController extends Controller
         try{
             //eliminamos el estudiante
             $estudiante->delete();
-            return response()->json(['mensaje'=>"dato eliminado"]);    
+            return response()->json(['mensaje'=>"Dato Eliminado"]);    
         }catch(\Throwable $th){
-        return response()->json(['mensaje'=>"dato no eliminado"]);
+        return response()->json(['mensaje'=>"Dato no Eliminado"]);
         }
     }
-
-    // public function estudiante($id)
-    // {
-    //     return response()->json(["estudiante"=>estudiante::find($id)]);
-    // }
 
     public function estudiantes($id)
     {

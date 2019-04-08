@@ -24,22 +24,6 @@ class ModuloController extends Controller
        
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request){
 
         // instancia al modelo de modulos
@@ -57,44 +41,10 @@ class ModuloController extends Controller
         }catch(\throwable $th){
             return response()->json(['mensaje'=>"Datos no agregado"+$th]);
         }
-        
-
-
-
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         // un dato de ka db por su id
         $modulo=modulo::findofail($request->id);
         //actualizamos los datos
@@ -113,12 +63,6 @@ class ModuloController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(request $request){
         // busqueda de id por modulo
         $modulo=modulo::findorfail($request->id);
@@ -139,27 +83,43 @@ class ModuloController extends Controller
         $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
         return response()->json(["modulos"=>$modulo]);
     }
-
-    public function NotasModulo(){
-        $estudiantes = estudiante::select("id","nombres","apellidos")->where("id_cohorte",1)->get();
-        $notas="";
+    
+    // notas de estudiantes por modulo
+    public function NotasModulo(request $request){
+        // todos los estudiantes por cohorte
+        $estudiantes = estudiante::select("id","nombres","apellidos")->where("id_cohorte",$request["id_cohorte"])->get();
+        $modulo= [];
         $titulos=[];
+        $activida=[];
+        // foreach de estudiantes para agregar las notas de ese estudiante
         foreach ($estudiantes as $value) {
+            $notas=[];
+            //actividades por el modulo
             $actividades=Modulo::select("a.id","a.nombre_actividad as nombre","modulos.id as id_modulo","modulos.nombre as modulo")
             ->join("actividads as a","a.id_modulo","=","modulos.id")
-            ->where("modulos.id",2)->get();
+            ->where("modulos.id",$request["id_modulo"])->get();
+            //foreach de las actividades para sacar notas
             foreach ($actividades as $item) {
+                //nombre del modulo
                 $modulo = $item["modulo"];
                 $id_modulo=$item->id_modulo;
-                $titulos[]=$item->nombre;
-                $notas = nota::select()->where("id_actividad",$item["id"])->get();
+                if(in_array($item->nombre,$activida)){
+                }else{
+                    //nombre de la activiad
+                    $activida[]=$item->nombre;
+                }
+                //nota a su una actividad
+                $notas[$item->nombre] = nota::select("nota")->where("id_actividad",$item["id"])->where("id_estudiante",$value["id"])->get();
+                // $titulos[]=$notas;
             }
-            $titulos[]=$modulo;
-            $datos=[$estudiantes,$titulos];
-            // ->where("n.id_estudiante",$value["id"])->get();
-            // $value["notas"]=$notas;
+            //agregando las notas al alumno
+            $value["notas"]=$notas;
+
+            $titulos["modulo"]=$modulo;
+            $titulos["actividades"]=$activida;    
         }
-        
+        //datos de todos los estudiantes con sus notas
+        $datos=["titulos"=>$titulos,"estudiantes"=>$estudiantes];
         return response()->json($datos);
     }
     

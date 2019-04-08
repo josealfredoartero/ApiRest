@@ -9,11 +9,6 @@ use App\Model\NotasCds\Actividad;
 
 class ActividadController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(){
         $actividades = actividad::select('actividads.id','actividads.nombre_actividad as actividad','n.nota as nota','m.nombre as modulo')
         ->join('notas as n','n.id','=','actividads.id_nota')
@@ -23,22 +18,6 @@ class ActividadController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request){
         // instancia al modelo de actividades
         $actividad= new Actividad;
@@ -55,35 +34,6 @@ class ActividadController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request){
         // un dato de la base de datos por su id
         $actividad = actividad::findorfail($request->id);
@@ -100,12 +50,6 @@ class ActividadController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(request $request){
         //busqueda por id de actividad
         $actividad = actividad::findorfail($request->id);
@@ -117,11 +61,6 @@ class ActividadController extends Controller
         return response()->json(['mensaje'=>"dato no eliminado"]);
         }
     }
-
-    
-    // public function actividad($request){
-    //     return response()->json(['actividad'=>actividad::find($request)]);
-    // }
 
     public function actividades()
     {

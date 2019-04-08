@@ -80,15 +80,9 @@ class cursoController extends Controller{
         $cursos=curso::findorfail($id);
         $cursos->nombre=$request->nombre;
         if ($cursos->update() == true) {
-            return "<script>
-            window.alert('DATO MODIFICADO');
-            window.location.href='/inicio';
-            </script>";
+            return "Dato guardado";
         }else{
-            return "<script>
-            window.alert('DATO NO AGREGADO');
-            window.location.href='/inicio';
-            </script>";
+            return "Dato No Guardado";
         }
         // $cursos->update();
         // return redirect('/inicio');
@@ -106,16 +100,10 @@ class cursoController extends Controller{
         $cursos=curso::findorfail($id);
         //condicion si elimino 
         if ($cursos->delete() == true) {
-            return "<script>
-            window.alert('DATO ELIMINADO');
-            window.location.href='/inicio';
-            </script>";
+            return "Dato Eliminado";
             // return redirect('/inicio');
         }else{
-            return "<script>
-            window.alert('DATO NO ELIMINADO');
-            window.location.href='/inicio';
-            </script>";
+            return "Dato no Eliminado";
         }
     }
 

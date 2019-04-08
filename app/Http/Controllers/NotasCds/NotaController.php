@@ -9,77 +9,21 @@ use App\Model\NotasCds\nota;
 
 class NotaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
@@ -88,7 +32,7 @@ class NotaController extends Controller
     {
         try{
             foreach ($request->datos as $item){
-                $notas = new Nota;
+                $notas = new nota;
                 // echo $item->nota;
                 $notas->id_estudiante = $item["id_estudiante"];
                 $notas->id_actividad = $item['id_actividad'];
@@ -99,10 +43,7 @@ class NotaController extends Controller
             return response()->json(['mensaje'=>"dato agregado"]);    
         }catch(\Throwable $th){
             return response()->json(['mensaje'=>"dato no agregado",$th]);
-        }  
-        
-        
-       
+        }
     }
     
 }

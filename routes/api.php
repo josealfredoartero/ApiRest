@@ -36,10 +36,9 @@ route::group([
     route::delete("estudiante/delete","NotasCds\EstudianteController@destroy");
     route::post("estudiante/consulta","NotasCds\EstudianteController@estudiante");
     route::resource("modulos","NotasCds\ModuloController");
-    // route::resource("nota","NotasCds\NotaController");
     route::resource("cohorte","NotasCds\CohorteController");
     route::resource("actividad","NotasCds\ActividadController");
-    // route::get("cursoNivel","NotasCds\Curso_nivelsController@index");
+    route::post("cohortes","NotasCds\CohorteController@CohorteCurso");
     route::post("curso/cohorte","NotasCds\CursoController@cohorte");
     // route::get("modulos/nivel/{id}","NotasCds\ModuloController@NModulo");
     // route::get('cohorte/nivel/{id}/{id}',"NotasCds\ModuloController@CNivel");
@@ -49,6 +48,6 @@ route::group([
     route::post('actividades/modulo','NotasCds\ActividadController@actividades');
     route::post('agregar','NotasCds\NotaController@guardar');
     route::post("estudiante/nota","NotasCds\EstudianteController@estudianteNota");
-    route::get("modulo/notas","NotasCds\ModuloController@NotasModulo");
+    route::post("modulo/notas","NotasCds\ModuloController@NotasModulo");
 
  });
