@@ -31,6 +31,7 @@ route::group([
 ],
  function(){
     Route::resource('curso','NotasCds\CursoController');
+    route::get("notas","NotasCds\NotaController@index");
     Route::resource('estudiante','NotasCds\EstudianteController');
     route::put("estudiante/update","NotasCds\EstudianteController@update");
     route::delete("estudiante/delete","NotasCds\EstudianteController@destroy");
@@ -47,7 +48,7 @@ route::group([
     route::post('modulos/cursos','NotasCds\ModuloController@CNModulo');
     route::post('actividades/modulo','NotasCds\ActividadController@actividades');
     route::post('agregar','NotasCds\NotaController@guardar');
-    route::post("estudiante/nota","NotasCds\EstudianteController@estudianteNota");
+    route::post("estudiantes/notas","NotasCds\EstudianteController@estudianteNota");
     route::post("modulo/notas","NotasCds\ModuloController@NotasModulo");
 
  });

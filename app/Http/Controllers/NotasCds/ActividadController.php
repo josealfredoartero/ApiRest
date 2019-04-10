@@ -62,9 +62,9 @@ class ActividadController extends Controller
         }
     }
 
-    public function actividades()
+    public function actividades(Request $request)
     {
-        $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',1)->get();
+        $actividades = Actividad::select("id", "nombre_actividad as actividad")->where('id_modulo',$request["id_modulo"])->get();
         return response()->json(["actividades"=>$actividades]);
         // echo "dsnfweiofjew";
     }

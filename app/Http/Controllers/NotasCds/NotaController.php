@@ -11,7 +11,13 @@ class NotaController extends Controller
 {
     public function index()
     {
-        
+        $n=0;
+        $not = nota::select("nota")->where("id_actividad",1)->where("id_estudiante",1)->get();
+        foreach ($not as $key) {
+            $n=$key["nota"];
+        }
+        echo $n;
+        // return response()->json($n);
     }
 
     public function store(Request $request)

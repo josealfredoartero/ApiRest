@@ -14,7 +14,7 @@ class cursoController extends Controller{
      */
     public function index(){
         
-        return response()->json(["curso"=>Curso::all("id", "nombre")]);
+        return response()->json(["curso"=>Curso::select("id", "nombre")->get()]);
     }
     
     public function create(){

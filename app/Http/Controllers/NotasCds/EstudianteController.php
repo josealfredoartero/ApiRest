@@ -109,6 +109,7 @@ class EstudianteController extends Controller
         $modulo=[];
         $nivel ="";
         $curso="";
+        $idC="";
         $id_curso="";
         foreach ($cohorte as $c) {
             $id_curso = curso::select("cursos.id")->join("curso_nivels as s","s.id_curso","=","cursos.id")
@@ -126,7 +127,7 @@ class EstudianteController extends Controller
             $curso =$value["curso"];
             $nivel=$value["nombre_nivel"];
             $notas=nota::select("a.nombre_actividad as actividad","notas.nota")->join("actividads as a","a.id","notas.id_actividad")
-            ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->get();
+            ->join("modulos as m","m.id","=","a.id_modulo")->where("m.id",$value["id"])->where("id_estudiante",$request["id_estudiante"])->get();
             $modulo[]=["modulo"=>$value["modulo"],"notas"=>$notas];
         }
         foreach ($estudiante as $key) {

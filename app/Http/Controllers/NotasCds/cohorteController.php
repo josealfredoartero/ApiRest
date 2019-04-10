@@ -11,13 +11,13 @@ class CohorteController extends Controller
 {
     public function index()
     {
-        return response()->json(["cohortes"=>cohorte::all("id","nombre_cohorte as cohote")]);
+        return response()->json(["cohortes"=>cohorte::all("id","nombre_cohorte as cohorte")]);
     }
 
     //agregar cohorte
     public function store(Request $request)
     {   
-        if($request["nombre"] && $request["fechaInicio"] && $request["id_curso"]){
+        if($request["nombre"] && $request["fechaInicio"] && $request["id_curso"] !== null){
         
         try {
             //instancia al modelo
@@ -87,7 +87,16 @@ class CohorteController extends Controller
         $cohorte= cohorte::select("cohortes.id as id_cohorte","cohortes.nombre_cohorte as cohorte","c.id as id_curso","c.nombre as curso")
         ->join("curso_nivels as n","n.id_cohorte","=","cohortes.id")
         ->join("cursos as c","c.id","=","n.id_curso")->get();
+        $cohortes=[];
+        foreach ($cohorte as $item) {
+            if(in_array($item,$cohortes)){
+            }else{
+                //nombre de la activiad
+                $cohortes[]=$item;
+            }
+        }
+        
         //retornando datos
-        return response()->json(["cohortes"=>$cohorte]);
+        return response()->json(["cohortes"=>$cohortes]);
     }
 }
