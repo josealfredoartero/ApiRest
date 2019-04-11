@@ -9,6 +9,9 @@ use App\Model\NotasCds\nota;
 use App\Model\NotasCds\modulo;
 use App\Model\NotasCds\curso;
 use App\Model\NotasCds\curso_nivels;
+use App\User;
+use App\Role;
+use App\RoleUser;
 
 class EstudianteController extends Controller
 {
@@ -24,28 +27,49 @@ class EstudianteController extends Controller
 
     public function store(request $request)
     {
-        try{
-        //instancia al modelo de estudiante
-        $estudiante = new Estudiante;
-        //registramos los datos
-        $estudiante->nombres=$request->nombres;
-        $estudiante->apellidos=$request->apellidos;
-        $estudiante->DUI=$request->dui;
-        $estudiante->fecha_nacimiento=$request->fechaNac;
-        $estudiante->genero=$request->genero;
-        $estudiante->direccion=$request->direccion;
-        $estudiante->telefono=$request->telefono;
-        $estudiante->email=$request->email;
-        $estudiante->id_cohorte=$request->id_cohorte;
-        $estudiante->id_estado=1;
-        
-        //guardamos los datos en la base de datos
-        $estudiante->save();
-            return response()->json(['mensaje'=>"dato agregado"]);    
-        }catch(\Throwable $th){
-            return response()->json(['mensaje'=>"dato no agregado"+$th]);
+        if($request["nombres"] && $request["apellidos"] && $request["dui"] && $request["fechaNac"] &&
+        $request["genero"] && $request["direccion"] && $request["telefono"] && $request["email"] &&
+        $request["id_cohorte"] !== null){
+            try{
+                    $user = new User;
+                    $user->name=($request->nombres." ".$request->apellidos);
+                    $user->email=$request->email;
+                    $user->password=bcrypt("12345678");
+                    if($user->save()){
+                        $rol = new RoleUser;
+                        $users= User::select()->get();
+                        $ultimoUser=$users->last();
+                        $rol->user_id=$ultimoUser["id"];
+                        $rol->role_id=1;
+                        if($rol->save()){
+                            $nombres= strtoupper($request["nombres"]);
+                            $apellidos=strtoupper($request["apellidos"]);
+                            //instancia al modelo de estudiante
+                            $estudiante = new Estudiante;
+                            //registramos los datos
+                            $estudiante->nombres=$nombres;
+                            $estudiante->apellidos=$apellidos;
+                            $estudiante->DUI=$request->dui;
+                            $estudiante->fecha_nacimiento=$request->fechaNac;
+                            $estudiante->genero=$request->genero;
+                            $estudiante->direccion=$request->direccion;
+                            $estudiante->telefono=$request->telefono;
+                            $estudiante->email=$request->email;
+                            $estudiante->id_cohorte=$request->id_cohorte;
+                            $estudiante->id_estado=1;
+                            $estudiante->id_user=$ultimoUser["id"];
+                            $estudiante->save();
+                        }
+                    // $user->roles()->attach(Role::where('name',  $request->input('rol'))->first());
+                }
+                    return response()->json(['mensaje'=>"dato agregado"]);    
+                }catch(\Throwable $th){
+                    return response()->json(['mensaje'=>"dato no agregado"+$th]);
+                }
+        }else{
+            return response()->json(["mensaje"=>"Datos incompletos"]);
         }
-    }
+    } 
 
     public function update(Request $request)
     {

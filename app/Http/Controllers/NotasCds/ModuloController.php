@@ -95,10 +95,10 @@ class ModuloController extends Controller
         foreach ($estudiantes as $value) {
             $notas=[];
             $promedio=0;
-            $cont=0;
             $notasss= 0;
+            $porcentage=1;
             //actividades por el modulo
-            $actividades=Modulo::select("a.id","a.nombre_actividad as nombre","modulos.id as id_modulo","modulos.nombre as modulo")
+            $actividades=Modulo::select("a.id","a.nombre_actividad as nombre","modulos.id as id_modulo","modulos.nombre as modulo","a.ponderacion as ponderacion")
             ->join("actividads as a","a.id_modulo","=","modulos.id")
             ->where("modulos.id",$request["id_modulo"])->get();
             //foreach de las actividades para sacar notas
@@ -113,19 +113,18 @@ class ModuloController extends Controller
                 }
                 //nota a su una actividad
                 $not = nota::select("nota")->where("id_actividad",$item["id"])->where("id_estudiante",$value["id"])->get();
-                // $titulos[]=$notas;
+
                 foreach ($not as $key) {
-                $notasss = $notasss + $key["nota"];
+                $notasss = $notasss + ($key["nota"]*$item["ponderacion"]);
                 }
+                $porcentage=$item["ponderacion"];
+
                 $notas[] = $not;
-                $cont=$cont+1;
+
             }
-            // foreach ($notas as $key) {
-            //     $promedio = $key["nota"];
-            //     $cont+1;
-            // }
-            $promedio = bcdiv($notasss / $cont, 1, 1);
-            // $promedio = ($promedio/$cont);
+
+            $promedio = bcdiv($notasss, 1, 1);
+
             //agregando las notas al alumno
             $value["notas"]=$notas;
             $value["promedio"]=$promedio;
