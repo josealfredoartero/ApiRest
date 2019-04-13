@@ -11,12 +11,12 @@ class NotaController extends Controller
 {
     public function index()
     {
-        $n=0;
-        $not = nota::select("nota")->where("id_actividad",1)->where("id_estudiante",1)->get();
-        foreach ($not as $key) {
-            $n=$key["nota"];
-        }
-        echo $n;
+        // $n=0;
+        // $not = nota::select("nota")->where("id_actividad",1)->where("id_estudiante",1)->get();
+        // foreach ($not as $key) {
+        //     $n=$key["nota"];
+        // }
+        // echo $n;
         // return response()->json($n);
     }
 
@@ -36,10 +36,10 @@ class NotaController extends Controller
     }
     public function guardar(request $request)
     {
+        if($request["datos"] !== null){
         try{
             foreach ($request->datos as $item){
                 $notas = new nota;
-                // echo $item->nota;
                 $notas->id_estudiante = $item["id_estudiante"];
                 $notas->id_actividad = $item['id_actividad'];
                 $notas->nota = $item['nota'];
@@ -50,6 +50,9 @@ class NotaController extends Controller
         }catch(\Throwable $th){
             return response()->json(['mensaje'=>"dato no agregado",$th]);
         }
+    }else{
+        return response()->json(["mensaje"=>"no se pudo procesar la peticion"]);
+    }
     }
     
 }

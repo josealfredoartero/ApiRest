@@ -10,12 +10,20 @@ use App\Model\NotasCds\nota;
 
 class ModuloController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(["jwt"]);
+        // $this->middleware(["jwt","permisoRol:docente"], ["only"=>["CNModulo","NotasModulo"]]);
+        // $this->middleware(['jwt','permisoRol:admin']);
+        // $this->middleware(['jwt','permisoRol:estudiante'], ['except' => ['store']]);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    //lista de modulos
     public function index(){
+        //consulta de todos los modulos
         $modulos=Modulo::select('modulos.id','modulos.nombre','docentes.nombre as docente','nivels.nombre_nivel as nivel','cursos.nombre as curso')
         ->join('docentes','docentes.id','=','modulos.id_docente')
         ->join('nivels','nivels.id','=','modulos.id_nivel')
@@ -25,67 +33,103 @@ class ModuloController extends Controller
     }
 
     public function store(Request $request){
-
-        // instancia al modelo de modulos
-        $modulo= new Modulo;
-        // regristro de datos
-        $modulo->nombre=$request->nombre;
-        $modulo->id_docente=$request->id_docente;
-        $modulo->id_nivel=$request->id_nivel;
-        $modulo->id_curso=$request->id_curso;
-
-        try{
-            // guardamos los datos
-            $modulo=save();
-            return response()->json(['mensaje'=>"Datos agregado"]);
-        }catch(\throwable $th){
-            return response()->json(['mensaje'=>"Datos no agregado"+$th]);
-        }
+        
+        //validacion que los datos no vengan vacios
+         if($request->nombre && $request->id_docente && $request->id_nivel && $request->id_curso  != NULL ){
+                    // instancia al modelo de modulos
+                    $modulo= new Modulo;
+                    // regristro de datos
+                    $modulo->nombre=$request->nombre;
+                    $modulo->id_docente=$request->id_docente;
+                    $modulo->id_nivel=$request->id_nivel;
+                    $modulo->id_curso=$request->id_curso;
+            
+                    try{
+                        // guardamos los datos
+                        $modulo=save();
+                        return response()->json(['mensaje'=>"Datos agregado"]);
+                    }catch(\throwable $th){
+                        return response()->json(['mensaje'=>"Datos no agregado"+$th]);
+                    }
+            }else{
+                return response()->json(["mensaje"=>"Petición no procesada"]); 
+            }
+     
 
     }
 
     public function update(Request $request, $id){
-        // un dato de ka db por su id
-        $modulo=modulo::findofail($request->id);
-        //actualizamos los datos
-        $modulo->nombre=$request->nombre;
-        $modulo->id_docente=$request->id_docente;
-        $modulo->id_nivel=$request->id_nivel;
-        $modulo->id_curso=$request->id_curso;
+    //Validacion que los campos no vengan vacios
+    if($request->id  && $request->nombre && $request->id_docente && $request->id_nivel && $request->id_curso  != NULL){
+            // un dato de ka db por su id
+            $modulo=modulo::findofail($request->id);
+            //actualizamos los datos
+            $modulo->nombre=$request->nombre;
+            $modulo->id_docente=$request->id_docente;
+            $modulo->id_nivel=$request->id_nivel;
+            $modulo->id_curso=$request->id_curso;
 
-        try{
-            //aguardamos los cambios
-            $modulo->update();
-            return response()->json(['mensaje'=>"dato Modificado"]);
-        }catch(\Throwable $th){
-            return response()->json(['mensaje'=>"dato no Modificado"+$th]);
-        }
+            try{
+                //guardamos los cambios
+                $modulo->update();
+                return response()->json(['mensaje'=>"dato Modificado"]);
+            }catch(\Throwable $th){
+                return response()->json(['mensaje'=>"dato no Modificado"+$th]);
+            }
+    }else{
+        return response()->json(["mensaje"=>"Petición no procesada"]); 
+    }
+        
 
     }
 
     public function destroy(request $request){
-        // busqueda de id por modulo
-        $modulo=modulo::findorfail($request->id);
-        try{
-            //eliminar modulo
-            $modulo->delete();
-            return response()->json(['mensaje'=>"dato eliminado"]); 
-        }catch(\Throwable $th){
-            return response()->json(['mensaje'=>"dato no eliminado"]);
+        //Validacion de campos nulos
+        if($request->id != NULL){
+             // busqueda de id por modulo
+            $modulo=modulo::findorfail($request->id);
+            try{
+                //eliminar modulo
+                $modulo->delete();
+                return response()->json(['mensaje'=>"dato eliminado"]); 
+            }catch(\Throwable $th){
+                return response()->json(['mensaje'=>"dato no eliminado"]);
+            }
+        }else{
+            return response()->json(["mensaje"=>"Petición no procesada"]);  
         }
+       
     }
 
+    //consulta de un modulo
     public function modulo(request $request){
-        return response()->json(["modulo"=>modulo::find($request->id)]);
+        //Validacion que los datos no vengan nulos
+        if($request->id !=  NULL){
+            return response()->json(["modulo"=>modulo::find($request->id)]);
+        }else{           
+            return response()->json(["mensaje"=>"Petición no procesada"]); 
+        }
+        
     }
-    public function CNModulo(request $request)
-    {
-        $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
-        return response()->json(["modulos"=>$modulo]);
+
+   //modulos por nivel y curso
+    public function CNModulo(request $request)    
+    {   //Validacion que los datos no vengan nulos
+        if($request->id_nivel && $request->id_curso != NULL){
+             //consulta
+            $modulo = Modulo::select("id","nombre as modulo")->where('id_nivel',$request->id_nivel)->where('id_curso',$request->id_curso)->get();
+             return response()->json(["modulos"=>$modulo]);
+        }else{
+            return response()->json(["mensaje"=>"Petición no procesada"]); 
+        }
+       
     }
     
     // notas de estudiantes por modulo
     public function NotasModulo(request $request){
+        //Validacion que los datos no vengan nulos
+        if($request["id_cohorte"] && $request["id_modulo"] != null){
+
         // todos los estudiantes por cohorte
         $estudiantes = estudiante::select("id","nombres","apellidos")->where("id_cohorte",$request["id_cohorte"])->get();
         $modulo= "";
@@ -96,7 +140,7 @@ class ModuloController extends Controller
             $notas=[];
             $promedio=0;
             $notasss= 0;
-            $porcentage=1;
+            // $porcentage=1;
             //actividades por el modulo
             $actividades=Modulo::select("a.id","a.nombre_actividad as nombre","modulos.id as id_modulo","modulos.nombre as modulo","a.ponderacion as ponderacion")
             ->join("actividads as a","a.id_modulo","=","modulos.id")
@@ -117,7 +161,7 @@ class ModuloController extends Controller
                 foreach ($not as $key) {
                 $notasss = $notasss + ($key["nota"]*$item["ponderacion"]);
                 }
-                $porcentage=$item["ponderacion"];
+                // $porcentage=$item["ponderacion"];
 
                 $notas[] = $not;
 
@@ -133,7 +177,12 @@ class ModuloController extends Controller
         }
         //datos de todos los estudiantes con sus notas
         $datos=["titulos"=>$titulos,"estudiantes"=>$estudiantes];
+
         return response()->json($datos);
+    }else {
+        return response()->json(["mensaje"=>"peticion no procesada"]);
     }
+    }
+
     
 }

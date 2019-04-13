@@ -50,5 +50,6 @@ route::group([
     route::post('agregar','NotasCds\NotaController@guardar');
     route::post("estudiantes/notas","NotasCds\EstudianteController@estudianteNota");
     route::post("modulo/notas","NotasCds\ModuloController@NotasModulo");
+    route::Post("userEstudiante","NotasCds\EstudianteController@estudianteUser");
 
  });
