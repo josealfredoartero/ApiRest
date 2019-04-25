@@ -161,12 +161,11 @@ class ModuloController extends Controller
                 foreach ($not as $key) {
                 $notasss = $notasss + ($key["nota"]*$item["ponderacion"]);
                 }
-                // $porcentage=$item["ponderacion"];
-
+                //agregando las notas a la variable
                 $notas[] = $not;
 
             }
-
+            //convertir el promedio con solamente un decimal
             $promedio = bcdiv($notasss, 1, 1);
 
             //agregando las notas al alumno

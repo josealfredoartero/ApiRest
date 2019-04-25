@@ -35,9 +35,10 @@ class EstudianteController extends Controller
     public function store(request $request)
     {
         //validacion de los datos
-        if($request["nombres"] && $request["apellidos"] && $request["dui"] && $request["fechaNac"] &&
-        $request["genero"] && $request["direccion"] && $request["telefono"] && $request["email"] &&
-        $request["id_cohorte"] != null){
+        // if($request["nombres"] && $request["apellidos"] && $request["dui"] && $request["fechaNac"] &&
+        // $request["genero"] && $request["direccion"] && $request["telefono"] && $request["email"] &&
+        // $request["id_cohorte"] != null){
+            
             try{
                     //instancia al modelo de user para agregar un user 
                     $user = new User;
@@ -48,7 +49,7 @@ class EstudianteController extends Controller
                     //condicion si se guarda el usuario
                     if($user->save()){
                         //rol de estudiante
-                        $rolEstudiante=Role::select()->where("name","estudiante")->get();
+                        $rolEstudiante = Role::select()->where("name","estudiante")->get()->last();
                         //instancia a roles por user
                         $rol = new RoleUser;
                         //consulta del ultimo user ingresado
@@ -58,8 +59,8 @@ class EstudianteController extends Controller
                         $rol->user_id=$ultimoUser["id"];
                         $rol->role_id=$rolEstudiante["id"];
                         if($rol->save()){
-                            $nombres= strtoupper($request["nombres"]);
-                            $apellidos=strtoupper($request["apellidos"]);
+                            $nombres = strtoupper($request["nombres"]);
+                            $apellidos =strtoupper($request["apellidos"]);
                             //instancia al modelo de estudiante
                             $estudiante = new Estudiante;
                             //registramos los datos
@@ -83,12 +84,12 @@ class EstudianteController extends Controller
                     return response()->json(['mensaje'=>"dato agregado"]);    
                 }catch(\Throwable $th){
                     //retorno
-                    return response()->json(['mensaje'=>"dato no agregado"+$th]);
+                    return response()->json(['mensaje'=>"dato no agregado"]);
                 }
-        }else{
-            //retorno
-            return response()->json(["mensaje"=>"Datos incompletos"]);
-        }
+        // }else{
+        //     //retorno
+        //     return response()->json(["mensaje"=>"Datos incompletos"]);
+        // }
     } 
 //modificar datos del estudiante
     public function update(Request $request)
@@ -138,18 +139,21 @@ class EstudianteController extends Controller
        
     }
     //busqueda de un estudiante
-    public function estudiantes($id)
+    public function estudiantes(request $request)
     {
-        if($id !=null){
+        if($request["id"] !=null){
         $estudiantes = Estudiante::select("estudiantes.id","estudiantes.nombres",'estudiantes.apellidos')->join('cohortes as c','c.id', '=', 'estudiantes.id_cohorte')
-        ->where('c.id',$id)->get();
+        ->where('c.id',$request["id"])->get();
         $cont=1;
         foreach ($estudiantes as $key) {
             $key["nota"] =$cont;
             $cont ++;
         }
         return response()->json(["estudiantes"=>$estudiantes]);
+    }else{
+        return response()->json(["mensaje"=>"no se pudo completar la consulta"]);
     }
+
     }
     //consulta de las notas por un estudiante
     public function estudianteNota(request $request)
@@ -182,13 +186,15 @@ class EstudianteController extends Controller
                 }
             }
             //modulos del curso
-            $modulos = modulo::select("modulos.id","modulos.nombre as modulo","c.nombre as curso","n.nombre_nivel")->join("nivels as n","n.id","=","modulos.id_nivel")
+            $modulos = modulo::select("modulos.id","modulos.nombre as modulo","c.nombre as curso","n.nombre_nivel","c.id as id_curso")->join("nivels as n","n.id","=","modulos.id_nivel")
             ->join("cursos as c","c.id","=","modulos.id_curso")
             ->where("n.id",$request->id_nivel)->where("c.id",$idC)->get();
             
             foreach ($modulos as $value) {
                 //nombre del curso
                 $curso =$value["curso"];
+                //id de curso
+                $id_curso= $value["id_curso"];
                 //nivel
                 $nivel=$value["nombre_nivel"];
                 //notas de las actividades por modulo
@@ -199,6 +205,7 @@ class EstudianteController extends Controller
             foreach ($estudiante as $key) {
                 //datos adicionales al estudiante
                 $key["curso"]=$curso;
+                $key["id_curso"]=$id_curso;
                 $key["nivel"]=$nivel;
                 $key["modulos"]=$modulo;
             }
@@ -221,7 +228,7 @@ class EstudianteController extends Controller
         if($request["id_user"] != null){
             try {
                 //datos del estudiante del rol estudiante
-                $estudianteUser= estudiante::select("*")->where("id_user",$request["id_estudiante"])->get();
+                $estudianteUser= estudiante::select("*")->where("id_user",$request["id_user"])->get();
                 //retorno de los datos
                 return response()->json(["estudianteUser"=>$estudianteUser]);
             } catch (\Throwable $th) {
@@ -230,6 +237,25 @@ class EstudianteController extends Controller
         }else{
             response()->json(["mensaje"=>"error no se pudo realizar la peticion"]);
         }
+    }
+
+
+    public function listaEstudiantes(request $request)
+    {
+        $estudiantes = estudiante::select()->where("id_cohorte",$request["id_cohorte"])->get();
+
+        return response()->json(["estudiantes"=>$estudiantes]);
+    }
+
+    public function UnEstudiante(request $request)
+    {
+        $estudiante = estudiante::select("*","c.nombre_cohorte as cohorte", "s.nombre as curso")
+        ->join("cohortes as c","c.id","=","estudiantes.id_cohorte")
+        ->join("curso_nivels as n","n.id_cohorte","=","c.id")
+        ->join("cursos as s","s.id","=","n.id_curso")->where("estudiantes.id", $request["id"])
+        ->where("n.id_nivel",1)->get()->last();
+
+        return response()->json(["estudiante"=>$estudiante]);
     }
    
 }

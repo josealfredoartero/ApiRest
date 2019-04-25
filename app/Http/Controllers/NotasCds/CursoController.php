@@ -12,6 +12,14 @@ class cursoController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+        // $this->middleware(["jwt"]);
+        // $this->middleware(["jwt","permisoRol:estudiante"],["only"=>["estudianteNota","EstudianteUser"]]);
+        // $this->middleware(["jwt","permisoRol:docente"], ["only"=>["CNModulo","NotasModulo"]]);
+        // $this->middleware(['jwt','permisoRol:admin']);
+        // $this->middleware(['jwt','permisoRol:estudiante'], ['except' => ['store']]);
+    }
+    
     public function index(){
         
         return response()->json(["curso"=>Curso::select("id", "nombre")->get()]);
@@ -113,6 +121,14 @@ class cursoController extends Controller{
         ->join('curso_nivels as cn','cn.id_curso','=','cursos.id')
         ->join('cohortes as c','c.id','=','cn.id_cohorte')->where("cursos.id",$request->id_curso)->where("cn.id_nivel",1)
         ->get();
-        return response()->json(["cohortes"=>$cohorte]);
+        $cohortes=[];
+        foreach ($cohorte as $item) {
+            if(in_array($item,$cohortes)){
+            }else{
+                //nombre de la activiad
+                $cohortes[]=$item;
+            }
+        }
+        return response()->json(["cohortes"=>$cohortes]);
     }
 }

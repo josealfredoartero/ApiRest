@@ -9,6 +9,14 @@ use App\Model\NotasCds\Actividad;
 
 class ActividadController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(["jwt"]);
+        // $this->middleware(["jwt","permisoRol:estudiante"],["only"=>["estudianteNota","EstudianteUser"]]);
+        // $this->middleware(["jwt","permisoRol:docente"], ["only"=>["CNModulo","NotasModulo"]]);
+        // $this->middleware(['jwt','permisoRol:admin']);
+        // $this->middleware(['jwt','permisoRol:estudiante'], ['except' => ['store']]);
+    }
+
     public function index(){
         $actividades = actividad::select('actividads.id','actividads.nombre_actividad as actividad','n.nota as nota','m.nombre as modulo')
         ->join('notas as n','n.id','=','actividads.id_nota')

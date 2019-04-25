@@ -11,6 +11,13 @@ use App\Model\NotasCds\Curso_nivels;
 
 class Curso_nivelsController extends Controller
 {
+    public function __construct(){
+        // $this->middleware(["jwt"]);
+        // $this->middleware(["jwt","permisoRol:estudiante"],["only"=>["estudianteNota","EstudianteUser"]]);
+        // $this->middleware(["jwt","permisoRol:docente"], ["only"=>["CNModulo","NotasModulo"]]);
+        // $this->middleware(['jwt','permisoRol:admin']);
+        // $this->middleware(['jwt','permisoRol:estudiante'], ['except' => ['store']]);
+    }
     /**
      * Display a listing of the resource.
      *

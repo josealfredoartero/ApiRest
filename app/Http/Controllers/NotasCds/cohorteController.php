@@ -9,6 +9,16 @@ use App\Model\NotasCds\Curso_nivels;
 
 class CohorteController extends Controller
 {
+
+    public function __construct(){
+        // $this->middleware('jwt');
+        // $this->middleware(["jwt","permisoRol:estudiante"],["only"=>["estudianteNota","EstudianteUser"]]);
+        // $this->middleware(["jwt","permisoRol:docente"], ["only"=>["CNModulo","NotasModulo"]]);
+        // $this->middleware(['jwt','permisoRol:admin']);
+        // $this->middleware(['jwt','permisoRol:estudiante'], ['except' => ['store']]);
+    }
+
+
     public function index()
     {
         return response()->json(["cohortes"=>cohorte::all("id","nombre_cohorte as cohorte")]);
@@ -95,6 +105,7 @@ class CohorteController extends Controller
                 $cohortes[]=$item;
             }
         }
+        sort($cohortes);
         
         //retornando datos
         return response()->json(["cohortes"=>$cohortes]);
